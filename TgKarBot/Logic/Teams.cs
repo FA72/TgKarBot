@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TgKarBot.Logic
 {
-    internal class Team
+    internal class Teams
     {
         public static string Registrate(string commandId, long userId)
         {

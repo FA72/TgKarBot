@@ -53,7 +53,7 @@ namespace TgKarBot.API
                     StaticLogger.Logger.Info(Constants.Commands.Start + " is done");
                     break;
                 case Constants.Commands.RegTeam:
-                    var text = Logic.Team.Registrate(message.Text.Split()[1], message.From.Id);
+                    var text = Logic.Teams.Registrate(message.Text.Split()[1], message.From.Id);
                     await botClient.SendTextMessageAsync(message.Chat, text);
                     StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);
                     break;
