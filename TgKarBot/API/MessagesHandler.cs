@@ -46,6 +46,7 @@ namespace TgKarBot.API
 
         private static async Task CommandSwitcher(ITelegramBotClient botClient, Message? message, string command)
         {
+            string text;
             switch (command.ToLower())
             {
                 case Constants.Commands.Start:
@@ -53,7 +54,12 @@ namespace TgKarBot.API
                     StaticLogger.Logger.Info(Constants.Commands.Start + " is done");
                     break;
                 case Constants.Commands.RegTeam:
-                    var text = await Logic.Teams.Registrate(message.Text.Split()[1], message.From.Id);
+                    text = await Logic.Teams.Registrate(message.Text.Split()[1], message.From.Id);
+                    await botClient.SendTextMessageAsync(message.Chat, text);
+                    StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);
+                    break;
+                case Constants.Commands.Ask:
+                    text = await Logic.Teams.Ask(message.From.Id, message.Text);
                     await botClient.SendTextMessageAsync(message.Chat, text);
                     StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);
                     break;

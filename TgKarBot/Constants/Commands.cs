@@ -9,6 +9,9 @@
         internal const string RegTeam = "/regteam";
         internal static List<string> RegTeamSynonims = new List<string>() { RegTeam, "team", "reg", "регистрация", "команда" };
 
+        internal const string Ask = "/ask";
+        internal static List<string> AskSynonims = new List<string>() { Ask, "ask", "Ответ" };
+
         internal static List<List<string>> Synonims = new List<List<string>>()
         {
             StartSynonims,
