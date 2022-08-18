@@ -18,6 +18,13 @@ namespace TgKarBot.API
 
             if (message?.Text == null) return;
 
+            if (message.From.Id < 0)
+            {
+                await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Angry);
+                StaticLogger.Logger.Info("Добавили в группу");
+                return;
+            }
+
             if (message?.Entities != null)
             {
                 foreach (var entity in message.Entities)
@@ -44,6 +51,11 @@ namespace TgKarBot.API
                 case Constants.Commands.Start:
                     await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Start);
                     StaticLogger.Logger.Info(Constants.Commands.Start + " is done");
+                    break;
+                case Constants.Commands.RegTeam:
+                    var text = Logic.Team.Registrate(message.Text.Split()[1], message.From.Id);
+                    await botClient.SendTextMessageAsync(message.Chat, text);
+                    StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);
                     break;
                 default:
                     await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
