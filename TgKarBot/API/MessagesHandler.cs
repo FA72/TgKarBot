@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Telegram.Bot.Types;
+﻿using Microsoft.VisualBasic;
+using NLog;
 using Telegram.Bot;
-using System.ComponentModel.DataAnnotations;
+using Telegram.Bot.Types;
 
 namespace TgKarBot.API
 {
@@ -13,6 +9,7 @@ namespace TgKarBot.API
     {
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+            StaticLogger.Logger.Debug(Newtonsoft.Json.JsonConvert.SerializeObject(update));
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(update));
             if (update.Type != Telegram.Bot.Types.Enums.UpdateType.Message)
                 return;
@@ -46,16 +43,19 @@ namespace TgKarBot.API
             {
                 case Constants.Commands.Start:
                     await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Start);
+                    StaticLogger.Logger.Info(Constants.Commands.Start + " is done");
                     break;
                 default:
                     await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
+                    StaticLogger.Logger.Info("Default message is sended");
                     break;
             }
+
         }
 
         public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
-            // Некоторые действия
+            StaticLogger.Logger.Info(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
         }
     }
