@@ -1,5 +1,4 @@
-﻿using System;
-using TgKarBot.API;
+﻿using TgKarBot.API;
 
 namespace TgKarBot
 {

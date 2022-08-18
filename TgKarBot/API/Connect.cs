@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
-using Telegram.Bot.Types;
 
 namespace TgKarBot.API
 {
@@ -17,6 +12,7 @@ namespace TgKarBot.API
         internal void Start()
         {
             Console.WriteLine("Запущен бот " + Bot.GetMeAsync().Result.FirstName);
+            StaticLogger.Logger.Info("Запуск бота");
 
             var cts = new CancellationTokenSource();
             var cancellationToken = cts.Token;
@@ -32,6 +28,7 @@ namespace TgKarBot.API
                 cancellationToken
             );
 
+            StaticLogger.Logger.Info("Бот успешно запущен");
             Console.ReadLine();
         }
     }
