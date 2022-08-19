@@ -6,7 +6,7 @@ namespace TgKarBot
     {
         static void Main(string[] args)
         {
-            var connect = new Connect();
+            Connect connect = new();
             connect.Start();
         }
     }
