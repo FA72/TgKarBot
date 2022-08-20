@@ -1,13 +1,11 @@
-﻿using TgKarBot.API;
-
-namespace TgKarBot
+﻿namespace TgKarBot
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var connect = new Connect();
-            connect.Start();
+            //var connect = new Connect();
+            //connect.Start();
         }
     }
 }

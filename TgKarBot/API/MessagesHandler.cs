@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using NLog;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace TgKarBot.API
@@ -54,14 +52,18 @@ namespace TgKarBot.API
                     StaticLogger.Logger.Info(Constants.Commands.Start + " is done");
                     break;
                 case Constants.Commands.RegTeam:
-                    text = await Logic.Teams.Registrate(message.Text.Split()[1], message.From.Id);
+                    var splitMessage = message.Text.Split();
+                    if (splitMessage.Length < 2)
+                        text = Constants.Messages.IncorrectInput + Constants.Commands.RegTeamSample;
+                    else text = await Logic.Teams.Registrate(splitMessage[1], message.From.Id);
+
                     await botClient.SendTextMessageAsync(message.Chat, text);
                     StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);
                     break;
                 case Constants.Commands.Ask:
-                    text = await Logic.Teams.Ask(message.From.Id, message.Text);
+                    text = await Logic.Asks.Ask(message.From.Id, message.Text);
                     await botClient.SendTextMessageAsync(message.Chat, text);
-                    StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);
+                    StaticLogger.Logger.Info($"Попытка ответить: {message.Text}. Результат: {text}");
                     break;
                 default:
                     await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
