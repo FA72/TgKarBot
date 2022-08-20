@@ -55,7 +55,7 @@ namespace TgKarBot.API
                     var splitMessage = message.Text.Split();
                     if (splitMessage.Length < 2)
                         text = Constants.Messages.IncorrectInput + Constants.Commands.RegTeamSample;
-                    else text = await Logic.Teams.Registrate(splitMessage[1], message.From.Id);
+                    else text = await Logic.Teams.RegTeam(splitMessage[1], message.From.Id);
 
                     await botClient.SendTextMessageAsync(message.Chat, text);
                     StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);

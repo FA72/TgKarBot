@@ -4,7 +4,7 @@ namespace TgKarBot.Logic
 {
     internal class Teams
     {
-        public static async Task<string> Registrate(string teamId, long userId)
+        public static async Task<string> RegTeam(string teamId, long userId)
         {
             try
             {
