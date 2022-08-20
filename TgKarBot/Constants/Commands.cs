@@ -4,14 +4,14 @@
     {
 
         internal const string Start = "/start";
-        internal static List<string> StartSynonims = new List<string>() { Start, "start", "старт", "начать", "запуск"};
+        internal static List<string> StartSynonims = new() { Start, "start", "старт", "начать", "запуск"};
 
         internal const string RegTeam = "/regteam";
-        internal static List<string> RegTeamSynonims = new List<string>() { RegTeam, "team", "reg", "регистрация", "команда" };
+        internal static List<string> RegTeamSynonims = new() { RegTeam, "team", "reg", "регистрация", "команда" };
         internal const string RegTeamSample = RegTeam + " id";
 
         internal const string Ask = "/ask";
-        internal static List<string> AskSynonims = new List<string>() { Ask, "ask", "Ответ" };
+        internal static List<string> AskSynonims = new() { Ask, "ask", "Ответ" };
         internal const string AskSample = RegTeam + " (номер вопроса) (ответ)";
 
         internal const string AddTask = "/addtask";
@@ -20,7 +20,8 @@
         internal static List<List<string>> Synonims = new List<List<string>>()
         {
             StartSynonims,
-            RegTeamSynonims
+            RegTeamSynonims,
+            AskSynonims
         };
     }
 }
