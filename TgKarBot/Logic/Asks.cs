@@ -8,7 +8,13 @@ namespace TgKarBot.Logic
 {
     internal class Asks
     {
-        public static async Task<string> Ask(long userId, string message)
+        /// <summary>
+        /// Принимает ответ от команды и проверяет его на правильность.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static async Task<string> CheckAsk(long userId, string message)
         {
             try
             {
@@ -29,25 +35,23 @@ namespace TgKarBot.Logic
 
                 var ask = sb.ToString();
                 var correctAsk = await Database.Database.ReadAskAsync(num);
-                
+
                 if (correctAsk == null) return Constants.Messages.IncorrectNum;
 
                 if (ask != correctAsk) return Constants.Messages.NotCorrectAsk;
 
-                await Database.Database.CreateTeamProgressAsync(teamId, num);
-                var readAllProgress = await Database.Database.ReadTeamProgressAsync(teamId);
-                // TODO Подумать, что делать, с этим и как определять победу;
+                var isWin = await Teams.SaveProgress(teamId, num);
 
-                if (readAllProgress.Count >= 10) return Constants.Messages.WinTheGame;
+                if (isWin) return Constants.Messages.WinTheGame;
 
                 var reward = await Database.Database.ReadRewardAsync(num);
                 return Constants.Messages.Correct + @"\n" + reward;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                return Constants.Messages.Error;
             }
         }
+
     }
 }

@@ -61,7 +61,7 @@ namespace TgKarBot.API
                     StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);
                     break;
                 case Constants.Commands.Ask:
-                    text = await Logic.Asks.Ask(message.From.Id, message.Text);
+                    text = await Logic.Asks.CheckAsk(message.From.Id, message.Text);
                     await botClient.SendTextMessageAsync(message.Chat, text);
                     StaticLogger.Logger.Info($"Попытка ответить: {message.Text}. Результат: {text}");
                     break;

@@ -30,5 +30,15 @@ namespace TgKarBot.Logic
             var teamIdFromDb = await Database.Database.ReadTeamByUserId(userId.ToString());
             return teamIdFromDb;
         }
+
+
+        internal static async Task<bool> SaveProgress(string teamId, string num)
+        {
+            await Database.Database.CreateTeamProgressAsync(teamId, num);
+            var readAllProgress = await Database.Database.ReadTeamProgressAsync(teamId);
+            // TODO Подумать, что делать, с этим и как определять победу;
+            var isWin = readAllProgress.Count >= 10;
+            return isWin;
+        }
     }
 }
