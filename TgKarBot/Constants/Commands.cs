@@ -17,7 +17,7 @@
         internal const string AddTask = "/addtask";
         internal const string AddTaskSample = AddTask + " (номер вопроса) (ответ)";
 
-        internal static List<List<string>> Synonims = new List<List<string>>()
+        internal static List<List<string>> Synonims = new()
         {
             StartSynonims,
             RegTeamSynonims,

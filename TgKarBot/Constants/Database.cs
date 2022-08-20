@@ -26,6 +26,10 @@
         public static string UpdateTeamProgress = Upgrade(ValueTeamProgress);
         public static string GetFromTeamProgress = GetFrom(IdTeamProgress, ValueTeamProgress);
 
+        public static string InsertIntoAdmins = InsertInto(ValueAdmins);
+        public static string DeleteFromAdmins = DeleteFrom(IdAdmins);
+        public static string GetFromAdmins = GetFrom(ValueAdmins, IdAdmins);
+
         private const string IdTeams = "TeamId";
         private const string ValueTeams = "UserId";
 
@@ -38,6 +42,13 @@
         private const string IdTeamProgress = "Id";
         private const string ValueTeamProgress = "CorrectAsk";
 
+        private const string IdAdmins = "Id";
+        private const string ValueAdmins = "UserId";
+
+        private static string InsertInto(string value)
+        {
+            return $"INSERT INTO [dbo].[Teams] ({value}) VALUES ";
+        }
 
         private static string InsertInto(string id, string value)
         {

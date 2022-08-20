@@ -15,6 +15,7 @@
         internal const string NotCorrectAsk = "Ответ неверный";
         internal const string WinTheGame = "Поздравляем вас! Вы прошли игру!";
         internal const string Correct = "Правильный ответ. За это я вам скажу: ";
+        internal const string OnlyForAdmins = "Эта команда только для админов";
 
         internal const string IncorrectInput = "Неправильно введённые данные, пожалуйста, введите команду по шаблону: ";
         internal const string Error = "Произошла ошибка в работе бота, пожалуйста, свяжитесь с администрацией через @Edgar_Allan_Po_2022_Bot";

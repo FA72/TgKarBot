@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TgKarBot.Logic.Helpers;
 
 namespace TgKarBot.Logic
 {
@@ -27,7 +28,7 @@ namespace TgKarBot.Logic
                     return Constants.Messages.IncorrectInput + Constants.Commands.AskSample;
 
                 var num = splittedMessage[0];
-                var ask = ParseAsk(splittedMessage, 2);
+                var ask = Parser.ParseBodyMessage(splittedMessage, 2);
                 var correctAsk = await Database.Database.ReadAskAsync(num);
 
                 if (correctAsk == null) return Constants.Messages.IncorrectNum;
@@ -45,16 +46,6 @@ namespace TgKarBot.Logic
             {
                 return Constants.Messages.Error;
             }
-        }
-
-        private static string ParseAsk(string[] splittedMessage, int askPosition)
-        {
-            var sb = new StringBuilder(splittedMessage[askPosition]);
-            for (var i = 3; i < splittedMessage.Length; i++) 
-                sb.Append(splittedMessage[i]);
-
-            var ask = sb.ToString();
-            return ask;
         }
     }
 }
