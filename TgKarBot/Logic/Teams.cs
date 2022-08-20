@@ -19,7 +19,7 @@ namespace TgKarBot.Logic
                 await Database.Database.CreateTeamAsync(userId.ToString(), teamId);
                 return Constants.Messages.DoneTeamRegisteration;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return Constants.Messages.Error;
             }

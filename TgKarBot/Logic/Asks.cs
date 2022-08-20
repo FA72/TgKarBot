@@ -42,7 +42,7 @@ namespace TgKarBot.Logic
                 var reward = await Database.Database.ReadRewardAsync(num);
                 return Constants.Messages.Correct + @"\n" + reward;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return Constants.Messages.Error;
             }

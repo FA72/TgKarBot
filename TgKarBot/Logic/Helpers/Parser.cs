@@ -11,7 +11,7 @@ namespace TgKarBot.Logic.Helpers
         public static string ParseBodyMessage(string[] splittedMessage, int askPosition)
         {
             var sb = new StringBuilder(splittedMessage[askPosition]);
-            for (var i = 3; i < splittedMessage.Length; i++)
+            for (var i = askPosition + 1; i < splittedMessage.Length; i++)
                 sb.Append(splittedMessage[i]);
 
             var ask = sb.ToString();
