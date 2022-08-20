@@ -14,6 +14,9 @@
         internal static List<string> AskSynonims = new List<string>() { Ask, "ask", "Ответ" };
         internal const string AskSample = RegTeam + " (номер вопроса) (ответ)";
 
+        internal const string AddTask = "/addtask";
+        internal const string AddTaskSample = AddTask + " (номер вопроса) (ответ)";
+
         internal static List<List<string>> Synonims = new List<List<string>>()
         {
             StartSynonims,

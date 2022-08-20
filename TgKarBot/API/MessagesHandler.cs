@@ -65,6 +65,8 @@ namespace TgKarBot.API
                     await botClient.SendTextMessageAsync(message.Chat, text);
                     StaticLogger.Logger.Info($"Попытка ответить: {message.Text}. Результат: {text}");
                     break;
+                case Constants.Commands.AddTask:
+                    break;
                 default:
                     await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
                     StaticLogger.Logger.Info("Default message is sended");
