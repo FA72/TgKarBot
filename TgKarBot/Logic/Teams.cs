@@ -6,23 +6,16 @@ namespace TgKarBot.Logic
     {
         public static async Task<string> RegTeam(string teamId, long userId)
         {
-            try
+            var userIdFromDb = await Database.Database.ReadTeamAsync(teamId);
+            if (userIdFromDb != null)
             {
-                var userIdFromDb = await Database.Database.ReadTeamAsync(teamId);
-                if (userIdFromDb != null)
-                {
-                    return userIdFromDb == userId.ToString()
-                        ? Constants.Messages.AlreadyRegistered
-                        : Constants.Messages.OtherUser;
-                }
+                return userIdFromDb == userId.ToString()
+                    ? Constants.Messages.AlreadyRegistered
+                    : Constants.Messages.OtherUser;
+            }
 
-                await Database.Database.CreateTeamAsync(userId.ToString(), teamId);
-                return Constants.Messages.DoneTeamRegisteration;
-            }
-            catch (Exception)
-            {
-                return Constants.Messages.Error;
-            }
+            await Database.Database.CreateTeamAsync(userId.ToString(), teamId);
+            return Constants.Messages.DoneTeamRegisteration;
         }
 
         internal static async Task<string?> CheckRegistration(long userId)
