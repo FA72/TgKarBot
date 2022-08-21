@@ -56,7 +56,7 @@
 
         private static string GetFrom(string id, string value)
         {
-            return $"GET {value} FROM [dbo].[Teams] WHERE {id} = ";
+            return $"SELECT {value} FROM [dbo].[Teams] WHERE {id} = ";
         }
     }
 }
