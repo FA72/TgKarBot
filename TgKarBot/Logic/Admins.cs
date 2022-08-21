@@ -12,7 +12,8 @@ namespace TgKarBot.Logic
                     Database.Database.ReadAskAsync,
                     Database.Database.CreateAskAsync,
                     Messages.TaskAlreadyExist,
-                    Messages.TaskSuccessCreation);
+                    Messages.TaskSuccessCreation,
+                    2);
         }
 
         internal static async Task<string> DeleteTask(long userId, string message)
@@ -32,7 +33,8 @@ namespace TgKarBot.Logic
                     Database.Database.ReadAdminAsync,
                     Database.Database.CreateAdminAsync,
                     Messages.AdminAlreadyExist,
-                    Messages.AdminSuccessCreation);
+                    Messages.AdminSuccessCreation,
+                    1);
         }
 
         internal static async Task<string> DeleteAdmin(long userId, string message)
@@ -43,12 +45,3 @@ namespace TgKarBot.Logic
                     Database.Database.DeleteAdminAsync,
                     Messages.AdminDoesntExist,
                     Messages.AdminSuccessDelete);
-        }
-
-        internal static async Task<bool> CheckAdmins(long userId)
-        {
-            var adminId = await Database.Database.ReadAdminAsync(userId.ToString());
-            return adminId != null;
-        }
-    }
-}
