@@ -17,8 +17,14 @@
         internal const string AddTask = "/addtask";
         internal const string AddTaskSample = AddTask + " (номер вопроса) (ответ)";
 
+        internal const string DeleteTask = "/deltask";
+        internal const string DeleteTaskSample = AddTask + " (номер вопроса)";
+
         internal const string AddAdmin = "/addadmin";
         internal const string AddAdminSample = AddTask + " (номер вопроса) (ответ)";
+
+        internal const string DeleteAdmin = "/deladmin";
+        internal const string DeleteAdminSample = DeleteAdmin + " (номер вопроса) (ответ)";
 
         internal static List<List<string>> Synonims = new()
         {

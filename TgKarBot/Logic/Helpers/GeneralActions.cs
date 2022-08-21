@@ -43,12 +43,11 @@ namespace TgKarBot.Logic.Helpers
             if (!await Admins.CheckAdmins(userId)) return Messages.OnlyForAdmins;
 
             var splittedMessage = message.Split();
-            var num = splittedMessage[1];
-            if (await readFunc(num) == null)
+            var id = splittedMessage[1];
+            if (await readFunc(id) == null)
                 return doesntExistMessage;
 
-            var ask = Parser.ParseBodyMessage(splittedMessage, 2);
-            await deleteFunc(num);
+            await deleteFunc(id);
 
             return successMessage;
         }

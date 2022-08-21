@@ -20,7 +20,24 @@ namespace TgKarBot.Logic
                     Database.Database.ReadAskAsync, 
                     Database.Database.CreateAskAsync, 
                     Messages.TaskAlreadyExist, 
-                    Messages.TaskSuccess);
+                    Messages.TaskSuccessCreation);
+            }
+            catch (Exception)
+            {
+                return Messages.Error;
+            }
+        }
+
+        internal static async Task<string> DeleteTask(long userId, string message)
+        {
+            try
+            {
+                return await GeneralActions.DeleteSomething(
+                    userId, message,
+                    Database.Database.ReadAskAsync,
+                    Database.Database.DeleteAskAsync,
+                    Messages.TaskDoesntExist,
+                    Messages.TaskSuccessDelete);
             }
             catch (Exception)
             {
@@ -37,7 +54,24 @@ namespace TgKarBot.Logic
                     Database.Database.ReadAdminAsync,
                     Database.Database.CreateAdminAsync,
                     Messages.AdminAlreadyExist,
-                    Messages.AdminSuccess);
+                    Messages.AdminSuccessCreation);
+            }
+            catch (Exception)
+            {
+                return Messages.Error;
+            }
+        }
+
+        internal static async Task<string> DeleteAdmin(long userId, string message)
+        {
+            try
+            {
+                return await GeneralActions.DeleteSomething(
+                    userId, message,
+                    Database.Database.ReadAdminAsync,
+                    Database.Database.DeleteAdminAsync,
+                    Messages.AdminDoesntExist,
+                    Messages.AdminSuccessDelete);
             }
             catch (Exception)
             {

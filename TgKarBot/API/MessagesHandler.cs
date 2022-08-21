@@ -70,10 +70,20 @@ namespace TgKarBot.API
                     await botClient.SendTextMessageAsync(message.Chat, text);
                     StaticLogger.Logger.Info($"Добавлен правильный ответ: {message.Text}. Результат: {text}");
                     break;
+                case Constants.Commands.DeleteTask:
+                    text = await Logic.Admins.DeleteTask(message.From.Id, message.Text);
+                    await botClient.SendTextMessageAsync(message.Chat, text);
+                    StaticLogger.Logger.Info($"Удалён правильный ответ: {message.Text}. Результат: {text}");
+                    break;
                 case Constants.Commands.AddAdmin:
                     text = await Logic.Admins.AddAdmin(message.From.Id, message.Text);
                     await botClient.SendTextMessageAsync(message.Chat, text);
                     StaticLogger.Logger.Info($"Добавлен админ: {message.Text}. Результат: {text}");
+                    break;
+                case Constants.Commands.DeleteAdmin:
+                    text = await Logic.Admins.DeleteAdmin(message.From.Id, message.Text);
+                    await botClient.SendTextMessageAsync(message.Chat, text);
+                    StaticLogger.Logger.Info($"Удалён админ: {message.Text}. Результат: {text}");
                     break;
                 default:
                     await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
