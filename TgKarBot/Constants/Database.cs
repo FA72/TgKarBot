@@ -5,69 +5,74 @@
         public const string ConnectionString =
             @"Data Source=DESKTOP-33VFDHM;Initial Catalog=TgKarDatabase;Integrated Security=True;Pooling=False";
 
-        public static string InsertIntoTeams = InsertInto(IdTeams, ValueTeams);
-        public static string DeleteFromTeams = DeleteFrom(IdTeams);
-        public static string UpdateTeams = Upgrade(ValueTeams);
-        public static string GetFromTeams = GetFrom(IdTeams, ValueTeams);
-        public static string GetFromTeamsByUserId = GetFrom(ValueTeams, IdTeams);
+        public static string InsertIntoTeams = InsertInto(Teams, IdTeams, ValueTeams);
+        public static string DeleteFromTeams = DeleteFrom(Teams, IdTeams);
+        public static string UpdateTeams = Upgrade(Teams, ValueTeams);
+        public static string GetFromTeams = GetFrom(Teams, IdTeams, ValueTeams);
+        public static string GetFromTeamsByUserId = GetFrom(Teams, ValueTeams, IdTeams);
 
-        public static string InsertIntoAsks = InsertInto(IdAsks, ValueAsks);
-        public static string DeleteFromAsks = DeleteFrom(IdAsks);
-        public static string UpdateAsks = Upgrade(ValueAsks);
-        public static string GetFromAsks = GetFrom(IdAsks, ValueAsks);
+        public static string InsertIntoAsks = InsertInto(Asks, IdAsks, ValueAsks);
+        public static string DeleteFromAsks = DeleteFrom(Asks, IdAsks);
+        public static string UpdateAsks = Upgrade(Asks, ValueAsks);
+        public static string GetFromAsks = GetFrom(Asks, IdAsks, ValueAsks);
 
-        public static string InsertIntoRewards = InsertInto(IdRewards, ValueRewards);
-        public static string DeleteFromRewards = DeleteFrom(IdRewards);
-        public static string UpdateRewards = Upgrade(ValueRewards);
-        public static string GetFromRewards = GetFrom(IdRewards, ValueRewards);
+        public static string InsertIntoRewards = InsertInto(Rewards, IdRewards, ValueRewards);
+        public static string DeleteFromRewards = DeleteFrom(Rewards, IdRewards);
+        public static string UpdateRewards = Upgrade(Rewards, ValueRewards);
+        public static string GetFromRewards = GetFrom(Rewards, IdRewards, ValueRewards);
 
-        public static string InsertIntoTeamProgress = InsertInto(IdTeamProgress, ValueTeamProgress);
-        public static string DeleteFromTeamProgress = DeleteFrom(IdTeamProgress);
-        public static string UpdateTeamProgress = Upgrade(ValueTeamProgress);
-        public static string GetFromTeamProgress = GetFrom(IdTeamProgress, ValueTeamProgress);
+        public static string InsertIntoTeamProgress = InsertInto(TeamProgress, IdTeamProgress, ValueTeamProgress);
+        public static string DeleteFromTeamProgress = DeleteFrom(TeamProgress, IdTeamProgress);
+        public static string UpdateTeamProgress = Upgrade(TeamProgress, ValueTeamProgress);
+        public static string GetFromTeamProgress = GetFrom(TeamProgress, IdTeamProgress, ValueTeamProgress);
 
-        public static string InsertIntoAdmins = InsertInto(ValueAdmins);
-        public static string DeleteFromAdmins = DeleteFrom(IdAdmins);
-        public static string GetFromAdmins = GetFrom(ValueAdmins, IdAdmins);
+        public static string InsertIntoAdmins = InsertInto(Admins, ValueAdmins);
+        public static string DeleteFromAdmins = DeleteFrom(Admins, IdAdmins);
+        public static string GetFromAdmins = GetFrom(Admins, ValueAdmins, IdAdmins);
 
+        private const string Teams = "Teams";
         private const string IdTeams = "TeamId";
         private const string ValueTeams = "UserId";
 
+        private const string Asks = "Asks";
         private const string IdAsks = "Id";
         private const string ValueAsks = "CorrectAsk";
 
+        private const string Rewards = "Rewards";
         private const string IdRewards = "AskId";
         private const string ValueRewards = "Reward";
 
+        private const string TeamProgress = "TeamProgress";
         private const string IdTeamProgress = "Id";
         private const string ValueTeamProgress = "CorrectAsk";
 
+        private const string Admins = "Admins";
         private const string IdAdmins = "Id";
         private const string ValueAdmins = "UserId";
 
-        private static string InsertInto(string value)
+        private static string InsertInto(string table, string value)
         {
-            return $"INSERT INTO [dbo].[Teams] ({value}) VALUES ";
+            return $"INSERT INTO [dbo].[{table}] ({value}) VALUES ";
         }
 
-        private static string InsertInto(string id, string value)
+        private static string InsertInto(string table, string id, string value)
         {
-            return $"INSERT INTO [dbo].[Teams] ({id}, {value}) VALUES ";
+            return $"INSERT INTO [dbo].[{table}] ({id}, {value}) VALUES ";
         }
 
-        private static string DeleteFrom(string id)
+        private static string DeleteFrom(string table, string id)
         {
-            return $"DELETE FROM [dbo].[Teams] WHERE {id} = ";
+            return $"DELETE FROM [dbo].[{table}] WHERE {id} = ";
         }
 
-        private static string Upgrade(string value)
+        private static string Upgrade(string table, string value)
         {
-            return $"UPDATE [dbo].[Teams] SET {value} = ";
+            return $"UPDATE [dbo].[{table}] SET {value} = ";
         }
 
-        private static string GetFrom(string id, string value)
+        private static string GetFrom(string table, string id, string value)
         {
-            return $"GET {value} FROM [dbo].[Teams] WHERE {id} = ";
+            return $"SELECT {value} FROM [dbo].[{table}] WHERE {id} = ";
         }
     }
 }
