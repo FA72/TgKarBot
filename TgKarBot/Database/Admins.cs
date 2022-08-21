@@ -12,9 +12,9 @@
             return await ReadAsync(Constants.Database.GetFromAdmins, UserId, "UserId");
         }
 
-        public static async Task DeleteAdminAsync(string id)
+        public static async Task DeleteAdminAsync(string userId)
         {
-            await DeleteAsync(Constants.Database.DeleteFromAdmins, id);
+            await DeleteAsync(Constants.Database.DeleteFromAdmins, userId);
         }
     }
 }
