@@ -28,7 +28,7 @@
 
         public static string InsertIntoAdmins = InsertInto(Admins, ValueAdmins);
         public static string DeleteFromAdmins = DeleteFrom(Admins, IdAdmins);
-        public static string GetFromAdmins = GetFrom(Admins, ValueAdmins, IdAdmins);
+        public static string GetFromAdmins = GetFrom(Admins, ValueAdmins, ValueAdmins);
 
         private const string Teams = "Teams";
         private const string IdTeams = "TeamId";
