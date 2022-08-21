@@ -4,7 +4,7 @@
     {
         public static async Task CreateAdminAsync(string id, string UserId)
         {
-            await Create(Constants.Database.InsertIntoAdmins, id, UserId);
+            await Create(Constants.Database.InsertIntoAdmins, UserId);
         }
 
         public static async Task<string?> ReadAdminAsync(string UserId)

@@ -20,7 +20,7 @@ namespace TgKarBot.Logic.Helpers
             if (await readFunc(id) != null)
                 return alreadyExistMessage;
 
-            var value = Parser.ParseBodyMessage(splittedMessage, 2);
+            var value = Parser.ParseBodyMessage(splittedMessage, 1);
             await writeFunc(id, value);
 
             return successMessage;

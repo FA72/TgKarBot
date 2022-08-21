@@ -28,6 +28,17 @@ namespace TgKarBot.Database
             await command.ExecuteNonQueryAsync();
         }
 
+        private static async Task Create(string insertCommand, string value)
+        {
+            var request = new StringBuilder();
+            request.Append(insertCommand);
+            request.Append($"('{value}')");
+
+            var sqlQuery = request.ToString();
+            await using var command = new SqlCommand(sqlQuery, _sqlConnection);
+            await command.ExecuteNonQueryAsync();
+        }
+
         private static async Task<string?> ReadAsync(string getCommand, string id, string valueName)
         {
             var request = new StringBuilder();
