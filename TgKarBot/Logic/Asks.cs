@@ -43,6 +43,7 @@ namespace TgKarBot.Logic
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 return Constants.Messages.Error;
             }
         }

@@ -12,6 +12,11 @@ namespace TgKarBot.Database
             await _sqlConnection.OpenAsync();
         }
 
+        public static async Task Disconnect()
+        {
+            await _sqlConnection.CloseAsync();
+        }
+
         private static async Task Create(string insertCommand, string id, string value)
         {
             var request = new StringBuilder();

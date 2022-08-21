@@ -45,6 +45,7 @@ namespace TgKarBot.API
         private static async Task CommandSwitcher(ITelegramBotClient botClient, Message? message, string command)
         {
             string text;
+            await Database.Database.Connect();
             switch (command.ToLower())
             {
                 case Constants.Commands.Start:
@@ -70,7 +71,7 @@ namespace TgKarBot.API
                     StaticLogger.Logger.Info("Default message is sended");
                     break;
             }
-
+            Database.Database.Disconnect();
         }
 
         public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
