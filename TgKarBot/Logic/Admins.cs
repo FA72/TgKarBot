@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,17 +15,29 @@ namespace TgKarBot.Logic
         {
             try
             {
-                if (!await CheckAdmins(userId)) return Messages.OnlyForAdmins;
+                return await GeneralActions.AddSomething(
+                    userId, message, 
+                    Database.Database.ReadAskAsync, 
+                    Database.Database.CreateAskAsync, 
+                    Messages.TaskAlreadyExist, 
+                    Messages.TaskSuccess);
+            }
+            catch (Exception)
+            {
+                return Messages.Error;
+            }
+        }
 
-                var splittedMessage = message.Split();
-                var num = splittedMessage[1];
-                if (await Database.Database.ReadAskAsync(num) != null)
-                    return Messages.TaskAlreadyExist;
-
-                var ask = Parser.ParseBodyMessage(splittedMessage, 2);
-                await Database.Database.CreateAskAsync(num, ask);
-
-                return Messages.TaskSuccess;
+        internal static async Task<string> AddAdmin(long userId, string message)
+        {
+            try
+            {
+                return await GeneralActions.AddSomething(
+                    userId, message,
+                    Database.Database.ReadAdminAsync,
+                    Database.Database.CreateAdminAsync,
+                    Messages.AdminAlreadyExist,
+                    Messages.AdminSuccess);
             }
             catch (Exception)
             {
