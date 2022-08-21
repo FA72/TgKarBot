@@ -27,7 +27,7 @@
         public static string GetFromTeamProgress = GetFrom(TeamProgress, IdTeamProgress, ValueTeamProgress);
 
         public static string InsertIntoAdmins = InsertInto(Admins, ValueAdmins);
-        public static string DeleteFromAdmins = DeleteFrom(Admins, IdAdmins);
+        public static string DeleteFromAdmins = DeleteFrom(Admins, ValueAdmins);
         public static string GetFromAdmins = GetFrom(Admins, ValueAdmins, ValueAdmins);
 
         private const string Teams = "Teams";
