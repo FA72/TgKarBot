@@ -16,42 +16,34 @@ namespace TgKarBot.Logic
         /// <returns></returns>
         public static async Task<string> CheckAsk(long userId, string message)
         {
-            try
-            {
-                var teamId = await Teams.CheckRegistration(userId);
-                if (teamId == null)
-                    return Constants.Messages.NotRegistered;
+            var teamId = await Teams.CheckRegistration(userId);
+            if (teamId == null)
+                return Constants.Messages.NotRegistered;
 
-                var splittedMessage = message.Split();
-                if (splittedMessage.Length < 3)
-                    return Constants.Messages.IncorrectInput + Constants.Commands.AskSample;
+            var splittedMessage = message.Split();
+            if (splittedMessage.Length < 3)
+                return Constants.Messages.IncorrectInput + Constants.Commands.AskSample;
 
-                var num = splittedMessage[0];
-                var ask = ParseAsk(splittedMessage, 2);
-                var correctAsk = await Database.Database.ReadAskAsync(num);
+            var num = splittedMessage[0];
+            var ask = ParseAsk(splittedMessage, 2);
+            var correctAsk = await Database.Database.ReadAskAsync(num);
 
-                if (correctAsk == null) return Constants.Messages.IncorrectNum;
+            if (correctAsk == null) return Constants.Messages.IncorrectNum;
 
-                if (ask != correctAsk) return Constants.Messages.NotCorrectAsk;
+            if (ask != correctAsk) return Constants.Messages.NotCorrectAsk;
 
-                var isWin = await Teams.SaveProgress(teamId, num);
+            var isWin = await Teams.SaveProgress(teamId, num);
 
-                if (isWin) return Constants.Messages.WinTheGame;
+            if (isWin) return Constants.Messages.WinTheGame;
 
-                var reward = await Database.Database.ReadRewardAsync(num);
-                return Constants.Messages.Correct + @"\n" + reward;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return Constants.Messages.Error;
-            }
+            var reward = await Database.Database.ReadRewardAsync(num);
+            return Constants.Messages.Correct + @"\n" + reward;
         }
 
         private static string ParseAsk(string[] splittedMessage, int askPosition)
         {
             var sb = new StringBuilder(splittedMessage[askPosition]);
-            for (var i = askPosition + 1; i < splittedMessage.Length; i++) 
+            for (var i = askPosition + 1; i < splittedMessage.Length; i++)
                 sb.Append(splittedMessage[i]);
 
             var ask = sb.ToString();
