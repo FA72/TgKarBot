@@ -87,6 +87,16 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Удалён админ: {message.Text}. Результат: {text}");
                         break;
+                    case Constants.Commands.AddReward:
+                        text = await Logic.Admins.AddReward(message.From.Id, message.Text);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Добавлена награда за правильный ответ: {message.Text}. Результат: {text}");
+                        break;
+                    case Constants.Commands.DeleteReward:
+                        text = await Logic.Admins.DeleteReward(message.From.Id, message.Text);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Удалёна награда за правильный ответ: {message.Text}. Результат: {text}");
+                        break;
                     default:
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
                         StaticLogger.Logger.Info("Default message is sended");

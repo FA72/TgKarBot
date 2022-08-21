@@ -26,6 +26,12 @@
         internal const string DeleteAdmin = "/deladmin";
         internal const string DeleteAdminSample = DeleteAdmin + " (номер вопроса) (ответ)";
 
+        internal const string AddReward = "/addreward";
+        internal const string AddRewardSample = AddReward + " (номер вопроса) (ответ)";
+
+        internal const string DeleteReward = "/delreward";
+        internal const string DeleteRewardSample = AddReward + " (номер вопроса)";
+
         internal static List<List<string>> Synonims = new()
         {
             StartSynonims,
