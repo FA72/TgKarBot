@@ -46,5 +46,12 @@ namespace TgKarBot.Logic
                 Messages.AdminDoesntExist,
                 Messages.AdminSuccessDelete);
         }
+
+
+        internal static async Task<bool> CheckAdmins(long userId)
+        {
+            var adminId = await Database.Database.ReadAdminAsync(userId.ToString());
+            return adminId != null;
+        }
     }
 }
