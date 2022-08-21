@@ -21,7 +21,7 @@
         internal const string DeleteTaskSample = AddTask + " (номер вопроса)";
 
         internal const string AddAdmin = "/addadmin";
-        internal const string AddAdminSample = AddTask + " (номер вопроса) (ответ)";
+        internal const string AddAdminSample = AddAdmin + " (номер вопроса) (ответ)";
 
         internal const string DeleteAdmin = "/deladmin";
         internal const string DeleteAdminSample = DeleteAdmin + " (номер вопроса) (ответ)";
