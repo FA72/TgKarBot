@@ -24,7 +24,7 @@
         public static string InsertIntoTeamProgress = InsertInto(TeamProgress, IdTeamProgress, ValueTeamProgress);
         public static string DeleteFromTeamProgress = DeleteFrom(TeamProgress, IdTeamProgress);
         public static string UpdateTeamProgress = Upgrade(TeamProgress, ValueTeamProgress);
-        public static string GetFromTeamProgress = GetFrom(TeamProgress, IdTeamProgress, ValueTeamProgress);
+        public static string GetAllFromTeamProgress = GetFrom(TeamProgress, IdTeamProgress, ValueTeamProgress);
 
         public static string InsertIntoAdmins = InsertInto(Admins, ValueAdmins);
         public static string DeleteFromAdmins = DeleteFrom(Admins, ValueAdmins);
@@ -43,8 +43,8 @@
         private const string ValueRewards = "Reward";
 
         private const string TeamProgress = "TeamProgress";
-        private const string IdTeamProgress = "Id";
-        private const string ValueTeamProgress = "CorrectAsk";
+        private const string IdTeamProgress = "TeamId";
+        private const string ValueTeamProgress = "AskId";
 
         private const string Admins = "Admins";
         private const string IdAdmins = "Id";
