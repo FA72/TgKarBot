@@ -28,18 +28,21 @@ namespace TgKarBot.Database
             await command.ExecuteNonQueryAsync();
         }
 
-        private static async Task<string?> ReadAsync(string getCommand, string id, string valueName)
+        private static async Task<string?> ReadAsync(string getCommand, string id, string valueName, string? value = null)
         {
             var request = new StringBuilder();
             request.Append(getCommand);
-            request.Append($"'{id}'");
+            if (value == null)
+                request.Append($"'{id}'");
+            else
+                request.Append($"'{id}' AND {valueName} = '{value}'");
 
             var sqlQuery = request.ToString();
             await using var command = new SqlCommand(sqlQuery, _sqlConnection);
             await using var reader = await command.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
-                return reader[valueName].ToString();
+                return reader[valueName]?.ToString()?.Trim();
 
             return null;
         }
