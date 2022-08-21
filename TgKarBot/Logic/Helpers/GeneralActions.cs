@@ -10,7 +10,8 @@ namespace TgKarBot.Logic.Helpers
             Func<string, Task<string?>> readFunc,
             Func<string, string, Task> writeFunc,
             string alreadyExistMessage,
-            string successMessage
+            string successMessage,
+            int numberOfArguments
             )
         {
             if (!await Admins.CheckAdmins(userId)) return Messages.OnlyForAdmins;
@@ -20,7 +21,7 @@ namespace TgKarBot.Logic.Helpers
             if (await readFunc(id) != null)
                 return alreadyExistMessage;
 
-            var value = Parser.ParseBodyMessage(splittedMessage, 1);
+            var value = Parser.ParseBodyMessage(splittedMessage, numberOfArguments);
             await writeFunc(id, value);
 
             return successMessage;

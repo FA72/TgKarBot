@@ -12,7 +12,8 @@ namespace TgKarBot.Logic
                     Database.Database.ReadAskAsync,
                     Database.Database.CreateAskAsync,
                     Messages.TaskAlreadyExist,
-                    Messages.TaskSuccess);
+                    Messages.TaskSuccess,
+                    2);
         }
 
         internal static async Task<string> AddAdmin(long userId, string message)
@@ -22,7 +23,8 @@ namespace TgKarBot.Logic
                     Database.Database.ReadAdminAsync,
                     Database.Database.CreateAdminAsync,
                     Messages.AdminAlreadyExist,
-                    Messages.AdminSuccess);
+                    Messages.AdminSuccess,
+                    1);
         }
 
         internal static async Task<bool> CheckAdmins(long userId)
