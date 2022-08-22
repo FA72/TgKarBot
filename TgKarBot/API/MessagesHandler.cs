@@ -68,8 +68,8 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Попытка ответить: {message.Text}. Результат: {text}");
                         break;
-                    case Constants.Commands.AddTask:
-                        text = await Logic.Admins.AddTask(message.From.Id, message.Text);
+                    case Constants.Commands.AddAsk:
+                        text = await Logic.Admins.AddAsk(message.From.Id, message.Text);
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Добавлен правильный ответ: {message.Text}. Результат: {text}");
                         break;

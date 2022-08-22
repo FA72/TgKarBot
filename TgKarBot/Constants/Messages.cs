@@ -17,8 +17,8 @@
         internal const string WinTheGame = "Поздравляем вас! Вы прошли игру!";
         internal const string Correct = "Правильный ответ. За это я вам скажу: ";
         internal const string OnlyForAdmins = "Эта команда только для админов";
-        internal const string TaskAlreadyExist = "Под этим номером задача уже существует";
-        internal const string TaskSuccess = "Задача успешно создана";
+        internal const string AskAlreadyExist = "Под этим номером ответ уже существует";
+        internal const string AskSuccess = "Ответ успешно добавлен";
 
         internal const string IncorrectInput = "Неправильно введённые данные, пожалуйста, введите команду по шаблону: ";
         internal const string Error = "Произошла ошибка в работе бота, пожалуйста, свяжитесь с администрацией через @Edgar_Allan_Po_2022_Bot";
