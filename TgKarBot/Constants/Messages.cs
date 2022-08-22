@@ -17,10 +17,10 @@
         internal const string WinTheGame = "Поздравляем вас! Вы прошли игру!";
         internal const string Correct = "Правильный ответ. За это я вам скажу: ";
         internal const string OnlyForAdmins = "Эта команда только для админов";
-        internal const string TaskAlreadyExist = "Под этим номером задача уже существует";
-        internal const string TaskSuccessCreation = "Задача успешно создана";
-        internal const string TaskDoesntExist = "Под этим номером задачи не существует";
-        internal const string TaskSuccessDelete = "Задача успешно удалена";
+        internal const string AskAlreadyExist = "Под этим номером ответ уже существует";
+        internal const string AskSuccessCreation = "Ответ успешно добавлен";
+        internal const string AskDoesntExist = "Под этим номером ответа не существует";
+        internal const string AskSuccessDelete = "Ответ успешно удален";
         internal const string AdminAlreadyExist = "Этот пользователь уже админ";
         internal const string AdminSuccessCreation = "Админ успешно добавлен";
         internal const string AdminDoesntExist = "Этот пользователь не админ";

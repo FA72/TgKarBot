@@ -5,25 +5,25 @@ namespace TgKarBot.Logic
 {
     internal class Admins
     {
-        internal static async Task<string> AddTask(long userId, string message)
+        internal static async Task<string> AddAsk(long userId, string message)
         {
             return await GeneralActions.AddSomething(
-                userId, message,
-                Database.Database.ReadAskAsync,
-                Database.Database.CreateAskAsync,
-                Messages.TaskAlreadyExist,
-                Messages.TaskSuccessCreation,
-                2);
+                    userId, message,
+                    Database.Database.ReadAskAsync,
+                    Database.Database.CreateAskAsync,
+                    Messages.AskAlreadyExist,
+                    Messages.AskSuccessCreation,
+                    2);
         }
 
-        internal static async Task<string> DeleteTask(long userId, string message)
+        internal static async Task<string> DeleteAsk(long userId, string message)
         {
             return await GeneralActions.DeleteSomething(
                 userId, message,
                 Database.Database.ReadAskAsync,
                 Database.Database.DeleteAskAsync,
-                Messages.TaskDoesntExist,
-                Messages.TaskSuccessDelete);
+                Messages.AskDoesntExist,
+                Messages.AskSuccessDelete);
         }
 
         internal static async Task<string> AddAdmin(long userId, string message)
