@@ -5,7 +5,7 @@ namespace TgKarBot.Logic
 {
     internal class Admins
     {
-        internal static async Task<string> AddTask(long userId, string message)
+        internal static async Task<string> AddAsk(long userId, string message)
         {
             return await GeneralActions.AddSomething(
                     userId, message,
