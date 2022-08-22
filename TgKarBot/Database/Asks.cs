@@ -1,10 +1,14 @@
-﻿namespace TgKarBot.Database
+﻿using TgKarBot.Database.Models;
+
+namespace TgKarBot.Database
 {
     internal partial class Database
     {
         public static async Task CreateAskAsync(string askId, string ask)
         {
-            await Create(Constants.Database.InsertIntoAsks, askId, ask);
+            await using var context = new TgBotDatabaseContext();
+            await context.Asks.AddAsync(new Ask(askId, ask));
+            await context.SaveChangesAsync();
         }
 
         public static async Task<string?> ReadAskAsync(string askId)
