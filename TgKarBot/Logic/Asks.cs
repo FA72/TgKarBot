@@ -22,11 +22,11 @@ namespace TgKarBot.Logic
 
             var num = splittedMessage[1];
 
-            if (await Database.Database.ReadTeamProgressAsync(teamId, num) != null)
+            if (await Database.TeamsProgress.ReadAsync(teamId, num) != null)
                 return Constants.Messages.AlreadyAsked;
 
             var ask = Parser.ParseBodyMessage(splittedMessage, 2);
-            var correctAsk = await Database.Database.ReadAskAsync(num);
+            var correctAsk = await Database.Asks.ReadAsync(num);
 
             if (correctAsk == null) return Constants.Messages.IncorrectNum;
 
@@ -36,7 +36,7 @@ namespace TgKarBot.Logic
 
             if (isWin) return Constants.Messages.WinTheGame;
 
-            var reward = await Database.Database.ReadRewardAsync(num);
+            var reward = await Database.Rewards.ReadAsync(num);
             return $"{Constants.Messages.Correct}\n{reward}";
         }
     }

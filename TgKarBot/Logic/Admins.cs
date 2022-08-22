@@ -9,8 +9,8 @@ namespace TgKarBot.Logic
         {
             return await GeneralActions.AddSomething(
                     userId, message,
-                    Database.Database.ReadAskAsync,
-                    Database.Database.CreateAskAsync,
+                    Database.Asks.ReadAsync,
+                    Database.Asks.CreateAsync,
                     Messages.AskAlreadyExist,
                     Messages.AskSuccessCreation,
                     2);
@@ -20,8 +20,8 @@ namespace TgKarBot.Logic
         {
             return await GeneralActions.DeleteSomething(
                 userId, message,
-                Database.Database.ReadAskAsync,
-                Database.Database.DeleteAskAsync,
+                Database.Asks.ReadAsync,
+                Database.Asks.DeleteAsync,
                 Messages.AskDoesntExist,
                 Messages.AskSuccessDelete);
         }
@@ -30,8 +30,8 @@ namespace TgKarBot.Logic
         {
             return await GeneralActions.AddSomething(
                 userId, message,
-                Database.Database.ReadAdminAsync,
-                Database.Database.CreateAdminAsync,
+                Database.Admins.ReadAsync,
+                Database.Admins.CreateAsync,
                 Messages.AdminAlreadyExist,
                 Messages.AdminSuccessCreation,
                 1);
@@ -41,8 +41,8 @@ namespace TgKarBot.Logic
         {
             return await GeneralActions.DeleteSomething(
                 userId, message,
-                Database.Database.ReadAdminAsync,
-                Database.Database.DeleteAdminAsync,
+                Database.Admins.ReadAsync,
+                Database.Admins.DeleteAsync,
                 Messages.AdminDoesntExist,
                 Messages.AdminSuccessDelete);
         }
@@ -51,8 +51,8 @@ namespace TgKarBot.Logic
         {
             return await GeneralActions.AddSomething(
                 userId, message,
-                Database.Database.ReadAskAsync,
-                Database.Database.CreateAskAsync,
+                Database.Asks.ReadAsync,
+                Database.Asks.CreateAsync,
                 Messages.RewardAlreadyExist,
                 Messages.RewardSuccessCreation,
                 2);
@@ -62,8 +62,8 @@ namespace TgKarBot.Logic
         {
             return await GeneralActions.DeleteSomething(
                 userId, message,
-                Database.Database.ReadAskAsync,
-                Database.Database.DeleteAskAsync,
+                Database.Asks.ReadAsync,
+                Database.Asks.DeleteAsync,
                 Messages.RewardDoesntExist,
                 Messages.RewardSuccessDelete);
         }
@@ -71,7 +71,7 @@ namespace TgKarBot.Logic
 
         internal static async Task<bool> CheckAdmins(long userId)
         {
-            var adminId = await Database.Database.ReadAdminAsync(userId.ToString());
+            var adminId = await Database.Admins.ReadAsync(userId.ToString());
             return adminId != null;
         }
     }

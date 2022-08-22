@@ -1,30 +1,53 @@
-﻿namespace TgKarBot.Database
+﻿using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using TgKarBot.Database.Models;
+using TgKarBot.Logic;
+
+namespace TgKarBot.Database
 {
-    internal partial class Database
+    internal class Teams
     {
-        public static async Task CreateTeamAsync(string userId, string teamId)
+        public static async Task CreateAsync(string userId, string teamId)
         {
-            await Create(Constants.Database.InsertIntoTeams, teamId, userId);
+            await using var context = new TgBotDatabaseContext();
+            await context.Teams.AddAsync(new Team(userId, teamId));
+            await context.SaveChangesAsync();
         }
 
-        public static async Task<string?> ReadTeamAsync(string teamId)
+        public static async Task<string?> ReadAsync(string teamId)
         {
-            return await ReadAsync(Constants.Database.GetFromTeams, teamId, "UserId");
+            await using var context = new TgBotDatabaseContext();
+            var team = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
+            return team?.UserId;
         }
 
-        public static async Task<string?> ReadTeamByUserId(string userId)
+        public static async Task<string?> ReadByUserId(string userId)
         {
-            return await ReadAsync(Constants.Database.GetFromTeamsByUserId, userId, "TeamId");
+            await using var context = new TgBotDatabaseContext();
+            var team = await context.Teams.FirstOrDefaultAsync(x => x.UserId == userId);
+            return team?.TeamId;
         }
 
-        public static async Task UpdateTeamAsync(string teamId, string userId)
+        public static async Task UpdateAsync(string teamId, string userId)
         {
-            await UpdateAsync(Constants.Database.UpdateTeams, teamId, userId, "TeamId");
+            await using var context = new TgBotDatabaseContext();
+            var obj = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
+            if (obj != null)
+{
+                obj.UserId = userId;
+                await context.SaveChangesAsync();
+            }
         }
 
-        public static async Task DeleteTeamAsync(string teamId)
+        public static async Task DeleteAsync(string teamId)
         {
-            await DeleteAsync(Constants.Database.DeleteFromTeams, teamId);
+            await using var context = new TgBotDatabaseContext();
+            var obj = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
+            if (obj != null)
+            {
+                context.Teams.Remove(obj);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -1,30 +1,30 @@
-﻿namespace TgKarBot.Database
+﻿using Microsoft.EntityFrameworkCore;
+using TgKarBot.Database.Models;
+
+namespace TgKarBot.Database
 {
-    internal partial class Database
+    internal class TeamsProgress
     {
-        public static async Task CreateTeamProgressAsync(string teamId, string askId)
+        public static async Task CreateAsync(string teamId, string askId)
         {
-            await Create(Constants.Database.InsertIntoTeamProgress, teamId, askId);
+            await using var context = new TgBotDatabaseContext();
+            await context.TeamsProgress.AddAsync(new TeamProgress(teamId, askId));
+            await context.SaveChangesAsync();
         }
 
-        public static async Task<List<string?>> ReadAllTeamProgressAsync(string teamId)
+        public static async Task<List<string?>> ReadAllAsync(string teamId)
         {
-            return await ReadAllAsync(Constants.Database.GetAllFromTeamProgress, teamId, "AskId");
+            await using var context = new TgBotDatabaseContext();
+            var query = from tp in context.TeamsProgress where tp.TeamId == teamId select tp.TeamId;
+            var teamsProgress = await query.ToListAsync();
+            return teamsProgress;
         }
 
-        public static async Task<string?> ReadTeamProgressAsync(string teamId, string askId)
+        public static async Task<string?> ReadAsync(string teamId, string askId)
         {
-            return await ReadAsync(Constants.Database.GetAllFromTeamProgress, teamId, "AskId", askId);
-        }
-
-        public static async Task UpdateTeamProgressAsync(string teamId, string askId)
-        {
-            await UpdateAsync(Constants.Database.UpdateTeamProgress, teamId, askId, "TeamId");
-        }
-
-        public static async Task DeleteTeamProgressAsync(string teamId)
-        {
-            await DeleteAsync(Constants.Database.DeleteFromTeamProgress, teamId);
+            await using var context = new TgBotDatabaseContext();
+            var teamProgress = await context.TeamsProgress.FirstOrDefaultAsync(x => x.TeamId == teamId && x.AskId == askId);
+            return teamProgress?.TeamId;
         }
     }
 }
