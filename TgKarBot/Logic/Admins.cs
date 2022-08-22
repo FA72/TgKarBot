@@ -11,8 +11,8 @@ namespace TgKarBot.Logic
                     userId, message,
                     Database.Database.ReadAskAsync,
                     Database.Database.CreateAskAsync,
-                    Messages.TaskAlreadyExist,
-                    Messages.TaskSuccess,
+                    Messages.AskAlreadyExist,
+                    Messages.AskSuccess,
                     2);
         }
 
