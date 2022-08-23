@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TgKarBot.Database.Models
+﻿namespace TgKarBot.Database.Models
 {
-    internal class Team
+    internal class TeamModel
     {
-        public Team(string teamId, string userId)
+        public TeamModel(string teamId, string userId)
         {
             TeamId = teamId;
             UserId = userId;

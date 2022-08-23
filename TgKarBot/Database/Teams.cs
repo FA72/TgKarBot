@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using TgKarBot.Database.Models;
-using TgKarBot.Logic;
 
 namespace TgKarBot.Database
 {
@@ -10,7 +8,7 @@ namespace TgKarBot.Database
         public static async Task CreateAsync(string userId, string teamId)
         {
             await using var context = new TgBotDatabaseContext();
-            await context.Teams.AddAsync(new Team(userId, teamId));
+            await context.Teams.AddAsync(new TeamModel(userId, teamId));
             await context.SaveChangesAsync();
         }
 

@@ -1,7 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
-using TgKarBot.Database;
 
 namespace TgKarBot.API
 {

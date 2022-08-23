@@ -8,7 +8,7 @@ namespace TgKarBot.Database
         public static async Task CreateAsync(string teamId, string askId)
         {
             await using var context = new TgBotDatabaseContext();
-            await context.TeamsProgress.AddAsync(new TeamProgress(teamId, askId));
+            await context.TeamsProgress.AddAsync(new TeamProgressModel(teamId, askId));
             await context.SaveChangesAsync();
         }
 
