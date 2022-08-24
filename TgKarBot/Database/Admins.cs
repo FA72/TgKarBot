@@ -6,7 +6,7 @@ namespace TgKarBot.Database
 {
     internal partial class Admins
     {
-        public static async Task CreateAsync(string userId)
+        public static async Task CreateAsync(string userId, string dummy = null)
         {
             await using var context = new TgBotDatabaseContext();
             await context.Admins.AddAsync(new Admin(userId));
