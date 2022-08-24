@@ -8,7 +8,7 @@ namespace TgKarBot.Database
         public static async Task CreateAsync(string askId, string reward)
         {
             await using var context = new TgBotDatabaseContext();
-            await context.Rewards.AddAsync(new Reward(askId, reward));
+            await context.Rewards.AddAsync(new RewardModel(askId, reward));
             await context.SaveChangesAsync();
         }
 
@@ -16,7 +16,7 @@ namespace TgKarBot.Database
         {
             await using var context = new TgBotDatabaseContext();
             var reward = await context.Rewards.FirstOrDefaultAsync(x => x.AskId == askId);
-            return reward?.RewardText;
+            return reward?.Reward;
         }
 
         public static async Task UpdateAsync(string askId, string Reward)
@@ -25,7 +25,7 @@ namespace TgKarBot.Database
             var obj = await context.Rewards.FirstOrDefaultAsync(x => x.AskId == askId);
             if (obj != null)
             {
-                obj.RewardText = Reward;
+                obj.Reward = Reward;
                 await context.SaveChangesAsync();
             }
         }
