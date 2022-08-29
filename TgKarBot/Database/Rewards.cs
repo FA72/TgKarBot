@@ -5,10 +5,10 @@ namespace TgKarBot.Database
 {
     internal class Rewards
     {
-        public static async Task CreateAsync(string askId, string reward)
+        public static async Task CreateAsync(string askId, string reward, bool main = true)
         {
             await using var context = new TgBotDatabaseContext();
-            await context.Rewards.AddAsync(new RewardModel(askId, reward));
+            await context.Rewards.AddAsync(new RewardModel(askId, reward, main.ToString()));
             await context.SaveChangesAsync();
         }
 

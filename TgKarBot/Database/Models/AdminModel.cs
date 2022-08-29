@@ -1,4 +1,6 @@
-﻿namespace TgKarBot.Database.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TgKarBot.Database.Models
 {
     internal class AdminModel
     {
@@ -12,7 +14,7 @@
             Id = id;
             UserId = userId;
         }
-
+        [Key]
         public int Id { get; set; }
         public string UserId { get; set; }
     }

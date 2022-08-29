@@ -20,9 +20,9 @@ namespace TgKarBot.Database
         {
             modelBuilder.Entity<AskModel>().ToTable("Asks");
             modelBuilder.Entity<AdminModel>().ToTable("Admins");
-            modelBuilder.Entity<RewardModel>().ToTable("Asks");
-            modelBuilder.Entity<TeamProgressModel>().ToTable("Admins");
-            modelBuilder.Entity<TeamModel>().ToTable("Admins");
+            modelBuilder.Entity<RewardModel>().ToTable("Rewards");
+            modelBuilder.Entity<TeamProgressModel>().ToTable("TeamProgress").HasKey(tp => new {tp.TeamId, tp.AskId});
+            modelBuilder.Entity<TeamModel>().ToTable("Teams");
         }
     }
 }

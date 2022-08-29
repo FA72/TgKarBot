@@ -9,6 +9,6 @@
         }
         public string TeamId { get; set; }
         public string AskId { get; set; }
-
+        public string Time { get; }
     }
 }

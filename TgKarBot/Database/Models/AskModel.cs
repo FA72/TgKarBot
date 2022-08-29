@@ -1,4 +1,6 @@
-﻿namespace TgKarBot.Database.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TgKarBot.Database.Models
 {
     internal class AskModel
     {
@@ -7,7 +9,7 @@
             Id = id;
             CorrectAsk = correctAsk;
         }
-
+        [Key]
         public string Id { get; set; }
         public string? CorrectAsk { get; set; }
     }
