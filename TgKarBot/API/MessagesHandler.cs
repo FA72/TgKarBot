@@ -18,9 +18,21 @@ namespace TgKarBot.API
 
             if (message.From.Id < 0)
             {
-                await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Angry);
-                StaticLogger.Logger.Info("Добавили в группу");
-                return;
+                switch (message.From.Id)
+                {
+                    case Constants.ChatId.chatId: //Тут ID чата, через который общаться с командами; Вероятно, нужно создать сущность (константу) с ID этого чата.
+                        if (message.ReplyToMessage != null)
+                        {
+                            await botClient.SendTextMessageAsync(message.From.Id, $"Кар!\n{message.Text}");
+                            StaticLogger.Logger.Info($"Ответили пользовалелю в ЛС. Текст: \"{message.Text}\".");
+                        }
+                        return;
+
+                    default:
+                        await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Angry);
+                        StaticLogger.Logger.Info("Добавили в группу");
+                        return;
+                }
             }
 
             if (message?.Entities != null)
@@ -96,6 +108,10 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Удалёна награда за правильный ответ: {message.Text}. Результат: {text}");
                         break;
+                    case Constants.Commands.Help:
+                        ReSendMessage(botClient, /*Constants.ChatId.chatId*/ -635211124, message.Chat.Id, message.MessageId);
+                        StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
+                        break;
                     default:
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
                         StaticLogger.Logger.Info("Default message is sended");
@@ -114,6 +130,11 @@ namespace TgKarBot.API
         {
             StaticLogger.Logger.Info(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
+        }
+
+        public async void ReSendMessage(ITelegramBotClient botClient, int toChatId, int fromChatId, int messageId)
+        {
+            botClient.ForwardMessageAsync(toChatId, fromChatId, messageId);
         }
     }
 }
