@@ -18,9 +18,13 @@
         internal const string Correct = "Правильный ответ. За это вам полагается: ";
         internal const string OnlyForAdmins = "Эта команда только для админов";
         internal const string AskAlreadyExist = "Под этим номером ответ уже существует";
-        internal const string AskSuccess = "Ответ успешно добавлен";
+        internal const string AskSuccessCreation = "Ответ успешно добавлен";
+        internal const string AskDoesntExist = "Под этим номером ответа не существует";
+        internal const string AskSuccessDelete = "Ответ успешно удален";
         internal const string AdminAlreadyExist = "Этот пользователь уже админ";
-        internal const string AdminSuccess = "Админ успешно добавлен";
+        internal const string AdminSuccessCreation = "Админ успешно добавлен";
+        internal const string AdminDoesntExist = "Этот пользователь не админ";
+        internal const string AdminSuccessDelete = "Админ успешно удалён";
 
         internal const string IncorrectInput = "Неправильно введённые данные, пожалуйста, введите команду по шаблону: ";
         internal const string Error = "Произошла ошибка в работе бота, пожалуйста, свяжитесь с администрацией через @Edgar_Allan_Po_2022_Bot";
