@@ -24,7 +24,7 @@
         internal const string AddAdminSample = $"{AddAdmin} UserId";
 
         internal const string DeleteAdmin = "/deladmin";
-        internal const string DeleteAdminSample = DeleteAdmin + " (номер вопроса) (ответ)";
+        internal const string DeleteAdminSample = $"{DeleteAdmin} (номер вопроса) (ответ)";
 
         internal static List<List<string>> Synonims = new()
         {
