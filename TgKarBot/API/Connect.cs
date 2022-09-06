@@ -1,5 +1,4 @@
-﻿using NLog;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
 
 namespace TgKarBot.API

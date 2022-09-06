@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using NLog;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace TgKarBot.API
@@ -47,28 +45,42 @@ namespace TgKarBot.API
         private static async Task CommandSwitcher(ITelegramBotClient botClient, Message? message, string command)
         {
             string text;
-            switch (command.ToLower())
+            await Database.Database.Connect();
+            try
             {
-                case Constants.Commands.Start:
-                    await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Start);
-                    StaticLogger.Logger.Info(Constants.Commands.Start + " is done");
-                    break;
-                case Constants.Commands.RegTeam:
-                    text = await Logic.Teams.Registrate(message.Text.Split()[1], message.From.Id);
-                    await botClient.SendTextMessageAsync(message.Chat, text);
-                    StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);
-                    break;
-                case Constants.Commands.Ask:
-                    text = await Logic.Teams.Ask(message.From.Id, message.Text);
-                    await botClient.SendTextMessageAsync(message.Chat, text);
-                    StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);
-                    break;
-                default:
-                    await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
-                    StaticLogger.Logger.Info("Default message is sended");
-                    break;
-            }
+                switch (command.ToLower())
+                {
+                    case Constants.Commands.Start:
+                        await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Start);
+                        StaticLogger.Logger.Info($"{Constants.Commands.Start} is done");
+                        break;
+                    case Constants.Commands.RegTeam:
+                        var splitMessage = message.Text.Split();
+                        if (splitMessage.Length < 2)
+                            text = Constants.Messages.IncorrectInput + Constants.Commands.RegTeamSample;
+                        else text = await Logic.Teams.RegTeam(splitMessage[1], message.From.Id);
 
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Попытка зарегистрировать команду: {text}");
+                        break;
+                    case Constants.Commands.Ask:
+                        text = await Logic.Asks.CheckAsk(message.From.Id, message.Text);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Попытка ответить: {message.Text}. Результат: {text}");
+                        break;
+                    default:
+                        await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
+                        StaticLogger.Logger.Info("Default message is sended");
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                StaticLogger.Logger.Error(e);
+                await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Error);
+            }
+            await Database.Database.Disconnect();
         }
 
         public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
