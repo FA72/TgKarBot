@@ -52,6 +52,27 @@ namespace TgKarBot.Logic
                 Messages.AdminSuccessDelete);
         }
 
+        internal static async Task<string> AddReward(long userId, string message)
+        {
+            return await GeneralActions.AddSomething(
+                userId, message,
+                Database.Database.ReadAskAsync,
+                Database.Database.CreateAskAsync,
+                Messages.RewardAlreadyExist,
+                Messages.RewardSuccessCreation,
+                2);
+        }
+
+        internal static async Task<string> DeleteReward(long userId, string message)
+        {
+            return await GeneralActions.DeleteSomething(
+                userId, message,
+                Database.Database.ReadAskAsync,
+                Database.Database.DeleteAskAsync,
+                Messages.RewardDoesntExist,
+                Messages.RewardSuccessDelete);
+        }
+
 
         internal static async Task<bool> CheckAdmins(long userId)
         {

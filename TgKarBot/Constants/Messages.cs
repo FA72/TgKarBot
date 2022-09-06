@@ -25,6 +25,10 @@
         internal const string AdminSuccessCreation = "Админ успешно добавлен";
         internal const string AdminDoesntExist = "Этот пользователь не админ";
         internal const string AdminSuccessDelete = "Админ успешно удалён";
+        internal const string RewardAlreadyExist = "Под этим номером награда уже существует";
+        internal const string RewardSuccessCreation = "Награда успешно создана";
+        internal const string RewardDoesntExist = "Под этим номером награда не существует";
+        internal const string RewardSuccessDelete = "Награда успешно удалена";
 
         internal const string IncorrectInput = "Неправильно введённые данные, пожалуйста, введите команду по шаблону: ";
         internal const string Error = "Произошла ошибка в работе бота, пожалуйста, свяжитесь с администрацией через @Edgar_Allan_Po_2022_Bot";
