@@ -18,7 +18,7 @@
         internal const string AddAskSample = $"{AddAsk} (номер вопроса) (ответ)";
 
         internal const string DeleteAsk = "/deltask";
-        internal const string DeleteAskSample = DeleteAsk + " (номер вопроса)";
+        internal const string DeleteAskSample = $"{DeleteAsk} (номер вопроса)";
 
         internal const string AddAdmin = "/addadmin";
         internal const string AddAdminSample = $"{AddAdmin} UserId";
