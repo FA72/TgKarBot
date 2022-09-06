@@ -2,6 +2,6 @@ namespace TgKarBot.Constants
 {
     internal class ChatId
     {
-        internal const int AdminChatId = -635211124; //это чат для тестов моего бота, нужно поменять
+        internal const long AdminChatId = -767044798; //это чат для тестов моего бота, нужно поменять
     }
 }

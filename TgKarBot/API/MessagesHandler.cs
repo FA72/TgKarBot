@@ -1,5 +1,6 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace TgKarBot.API
 {
@@ -16,16 +17,16 @@ namespace TgKarBot.API
 
             if (message?.Text == null) return;
 
-            if (message.From.Id < 0)
+            if (message.Chat.Type == ChatType.Group)
             {
-                switch (message.From.Id)
+                switch (message.Chat.Id)
                 {
                     case Constants.ChatId.AdminChatId:
-                        if (!Object.ReferenceEquals(null, message.ReplyToMessage?.ForwardFrom) && message.ReplyToMessage.From?.Id == botClient.BotId)
-                        {
-                            await botClient.SendTextMessageAsync(message.ReplyToMessage.ForwardFrom.Id, $"Кар!\n{message.Text}");
-                            StaticLogger.Logger.Info($"Ответили пользовалелю в ЛС. Текст: \"{message.Text}\".");
-                        }
+                        if (message.ReplyToMessage?.ForwardFrom == null || message.ReplyToMessage.From?.Id != botClient.BotId)
+                            return;
+
+                        await botClient.SendTextMessageAsync(message.ReplyToMessage.ForwardFrom.Id, $"Кар!\n{message.Text}");
+                        StaticLogger.Logger.Info($"Ответили пользовалелю в ЛС. Текст: \"{message.Text}\".");
                         return;
 
                     default:
