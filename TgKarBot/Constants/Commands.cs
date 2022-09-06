@@ -18,13 +18,13 @@
         internal const string AddAskSample = $"{AddAsk} (номер вопроса) (ответ)";
 
         internal const string DeleteAsk = "/deltask";
-        internal const string DeleteAskSample = DeleteAsk + " (номер вопроса)";
+        internal const string DeleteAskSample = $"{DeleteAsk} (номер вопроса)";
 
         internal const string AddAdmin = "/addadmin";
         internal const string AddAdminSample = $"{AddAdmin} UserId";
 
         internal const string DeleteAdmin = "/deladmin";
-        internal const string DeleteAdminSample = DeleteAdmin + " (номер вопроса) (ответ)";
+        internal const string DeleteAdminSample = $"{DeleteAdmin} (номер вопроса) (ответ)";
 
         internal const string AddReward = "/addreward";
         internal const string AddRewardSample = AddReward + " (номер вопроса) (ответ)";
