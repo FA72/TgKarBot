@@ -44,5 +44,15 @@ namespace TgKarBot.Logic
             var reward = await Database.Database.ReadRewardAsync(num);
             return $"{Constants.Messages.Correct}\n{reward}";
         }
+
+        private static string ParseAsk(string[] splittedMessage, int askPosition)
+        {
+            var sb = new StringBuilder(splittedMessage[askPosition]);
+            for (var i = askPosition + 1; i < splittedMessage.Length; i++)
+                sb.Append(splittedMessage[i]);
+
+            var ask = sb.ToString();
+            return ask;
+        }
     }
 }
