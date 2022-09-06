@@ -20,17 +20,17 @@ namespace TgKarBot.API
             {
                 switch (message.From.Id)
                 {
-                    case Constants.ChatId.chatId: //Тут ID чата, через который общаться с командами; Вероятно, нужно создать сущность (константу) с ID этого чата.
-                        if (message.ReplyToMessage != null)
+                    case Constants.ChatId.AdminChatId:
+                        if (!Object.ReferenceEquals(null, message.ReplyToMessage?.ForwardFrom) && message.ReplyToMessage.From?.Id == botClient.BotId)
                         {
-                            await botClient.SendTextMessageAsync(message.From.Id, $"Кар!\n{message.Text}");
+                            await botClient.SendTextMessageAsync(message.ReplyToMessage.ForwardFrom.Id, $"Кар!\n{message.Text}");
                             StaticLogger.Logger.Info($"Ответили пользовалелю в ЛС. Текст: \"{message.Text}\".");
                         }
                         return;
 
                     default:
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Angry);
-                        StaticLogger.Logger.Info("Добавили в группу");
+                        StaticLogger.Logger.Info("Попытка работы с ботом в группе");
                         return;
                 }
             }
@@ -109,7 +109,7 @@ namespace TgKarBot.API
                         StaticLogger.Logger.Info($"Удалёна награда за правильный ответ: {message.Text}. Результат: {text}");
                         break;
                     case Constants.Commands.Help:
-                        ReSendMessage(botClient, /*Constants.ChatId.chatId*/ -635211124, message.Chat.Id, message.MessageId);
+                        await botClient.ForwardMessageAsync(Constants.ChatId.AdminChatId, message.Chat.Id, message.MessageId);
                         StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
                         break;
                     default:
@@ -130,11 +130,6 @@ namespace TgKarBot.API
         {
             StaticLogger.Logger.Info(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
-        }
-
-        public async void ReSendMessage(ITelegramBotClient botClient, int toChatId, int fromChatId, int messageId)
-        {
-            botClient.ForwardMessageAsync(toChatId, fromChatId, messageId);
         }
     }
 }
