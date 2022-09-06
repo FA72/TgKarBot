@@ -52,7 +52,7 @@ namespace TgKarBot.API
                 {
                     case Constants.Commands.Start:
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Start);
-                        StaticLogger.Logger.Info(Constants.Commands.Start + " is done");
+                        StaticLogger.Logger.Info($"{Constants.Commands.Start} is done");
                         break;
                     case Constants.Commands.RegTeam:
                         var splitMessage = message.Text.Split();
@@ -60,7 +60,7 @@ namespace TgKarBot.API
                             text = Constants.Messages.IncorrectInput + Constants.Commands.RegTeamSample;
                         else text = await Logic.Teams.RegTeam(splitMessage[1], message.From.Id);
                         await botClient.SendTextMessageAsync(message.Chat, text);
-                        StaticLogger.Logger.Info("Попытка зарегистрировать команду: " + text);
+                        StaticLogger.Logger.Info($"Попытка зарегистрировать команду: {text}");
                         break;
                     case Constants.Commands.Ask:
                         text = await Logic.Asks.CheckAsk(message.From.Id, message.Text);
