@@ -4,6 +4,7 @@
     {
         public const string ConnectionString =
             @"Data Source=DESKTOP-33VFDHM;Initial Catalog=TgKarDatabase;Integrated Security=True;Pooling=False";
+            //@"Data Source=DESKTOP-DUT8BI9\SQLEXPRESSROKUS;Initial Catalog=TgKarDatabase;Integrated Security=True";
 
         public static string InsertIntoTeams = InsertInto(Teams, IdTeams, ValueTeams);
         public static string DeleteFromTeams = DeleteFrom(Teams, IdTeams);
