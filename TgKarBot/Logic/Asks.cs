@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TgKarBot.Logic.Helpers;
 
 namespace TgKarBot.Logic
 {
@@ -29,7 +30,7 @@ namespace TgKarBot.Logic
             if (await Database.Database.ReadTeamProgressAsync(teamId, num) != null)
                 return Constants.Messages.AlreadyAsked;
 
-            var ask = ParseAsk(splittedMessage, 2);
+            var ask = Parser.ParseBodyMessage(splittedMessage, 2);
             var correctAsk = await Database.Database.ReadAskAsync(num);
 
             if (correctAsk == null) return Constants.Messages.IncorrectNum;

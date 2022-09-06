@@ -12,7 +12,10 @@
 
         internal const string Ask = "/ask";
         internal static List<string> AskSynonims = new() { Ask, "ask", "Ответ" };
-        internal const string AskSample = RegTeam + " (номер вопроса) (ответ)";
+        internal const string AskSample = RegTeam + " (номер вопроса)";
+
+        internal const string AddAsk = "/addask";
+        internal const string AddAskSample = AddAsk + " (номер вопроса) (ответ)";
 
         internal static List<List<string>> Synonims = new()
         {
