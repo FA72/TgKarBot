@@ -22,7 +22,6 @@
             return teamIdFromDb;
         }
 
-
         internal static async Task<bool> SaveProgress(string teamId, string num)
         {
             await Database.TeamsProgress.CreateAsync(teamId, num);

@@ -2,7 +2,6 @@
 {
     internal class Commands
     {
-
         internal const string Start = "/start";
         internal static List<string> StartSynonims = new() { Start, "start", "старт", "начать", "запуск"};
 
@@ -32,11 +31,15 @@
         internal const string DeleteReward = "/delreward";
         internal const string DeleteRewardSample = $"{AddReward} (номер вопроса)";
 
+        internal const string Help = "/help";
+        internal static List<string> HelpSynonims = new() { Help, "help", "помощь" };
+
         internal static List<List<string>> Synonims = new()
         {
             StartSynonims,
             RegTeamSynonims,
-            AskSynonims
+            AskSynonims,
+            HelpSynonims
         };
     }
 }

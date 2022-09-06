@@ -1,5 +1,6 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace TgKarBot.API
 {
@@ -16,11 +17,23 @@ namespace TgKarBot.API
 
             if (message?.Text == null) return;
 
-            if (message.From.Id < 0)
+            if (message.Chat.Type == ChatType.Group)
             {
-                await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Angry);
-                StaticLogger.Logger.Info("Добавили в группу");
-                return;
+                switch (message.Chat.Id)
+                {
+                    case Constants.ChatId.AdminChatId:
+                        if (message.ReplyToMessage?.ForwardFrom == null || message.ReplyToMessage.From?.Id != botClient.BotId)
+                            return;
+
+                        await botClient.SendTextMessageAsync(message.ReplyToMessage.ForwardFrom.Id, $"Кар!\n{message.Text}");
+                        StaticLogger.Logger.Info($"Ответили пользовалелю в ЛС. Текст: \"{message.Text}\".");
+                        return;
+
+                    default:
+                        await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Angry);
+                        StaticLogger.Logger.Info("Попытка работы с ботом в группе");
+                        return;
+                }
             }
 
             if (message?.Entities != null)
@@ -95,6 +108,10 @@ namespace TgKarBot.API
                         text = await Logic.Admins.DeleteReward(message.From.Id, message.Text);
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Удалёна награда за правильный ответ: {message.Text}. Результат: {text}");
+                        break;
+                    case Constants.Commands.Help:
+                        await botClient.ForwardMessageAsync(Constants.ChatId.AdminChatId, message.Chat.Id, message.MessageId);
+                        StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
                         break;
                     default:
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
