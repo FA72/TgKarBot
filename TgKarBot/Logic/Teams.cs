@@ -1,6 +1,4 @@
-﻿using TgKarBot.Database;
-
-namespace TgKarBot.Logic
+﻿namespace TgKarBot.Logic
 {
     internal class Teams
     {

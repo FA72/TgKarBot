@@ -12,17 +12,24 @@ namespace TgKarBot.Logic
     {
         internal static async Task<string> AddAsk(long userId, string message)
         {
-            if (!await CheckAdmins(userId)) return Messages.OnlyForAdmins;
+            return await GeneralActions.AddSomething(
+                    userId, message,
+                    Database.Database.ReadAskAsync,
+                    Database.Database.CreateAskAsync,
+                    Messages.AskAlreadyExist,
+                    Messages.AskSuccess,
+                    2);
+        }
 
-            var splittedMessage = message.Split();
-            var num = splittedMessage[1];
-            if (await Database.Database.ReadAskAsync(num) != null)
-                return Messages.AskAlreadyExist;
-
-            var ask = Parser.ParseBodyMessage(splittedMessage, 2);
-            await Database.Database.CreateAskAsync(num, ask);
-
-            return Messages.AskSuccess;
+        internal static async Task<string> AddAdmin(long userId, string message)
+        {
+            return await GeneralActions.AddSomething(
+                    userId, message,
+                    Database.Database.ReadAdminAsync,
+                    Database.Database.CreateAdminAsync,
+                    Messages.AdminAlreadyExist,
+                    Messages.AdminSuccess,
+                    1);
         }
 
         internal static async Task<bool> CheckAdmins(long userId)
