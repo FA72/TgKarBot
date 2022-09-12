@@ -8,6 +8,7 @@ namespace TgKarBot.Database
         public DbSet<AskModel> Asks { get; set; }
         public DbSet<AdminModel> Admins { get; set; }
         public DbSet<RewardModel> Rewards { get; set; }
+        public DbSet<TaskModel> Tasks { get; set; }
         public DbSet<TeamProgressModel> TeamsProgress { get; set; }
         public DbSet<TeamModel> Teams { get; set; }
 
@@ -21,6 +22,7 @@ namespace TgKarBot.Database
             modelBuilder.Entity<AskModel>().ToTable("Asks");
             modelBuilder.Entity<AdminModel>().ToTable("Admins");
             modelBuilder.Entity<RewardModel>().ToTable("Rewards");
+            modelBuilder.Entity<TaskModel>().ToTable("Tasks");
             modelBuilder.Entity<TeamProgressModel>().ToTable("TeamProgress").HasKey(tp => new {tp.TeamId, tp.AskId});
             modelBuilder.Entity<TeamModel>().ToTable("Teams");
         }

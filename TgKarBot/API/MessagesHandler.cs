@@ -10,7 +10,7 @@ namespace TgKarBot.API
         {
             StaticLogger.Logger.Debug(Newtonsoft.Json.JsonConvert.SerializeObject(update));
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(update));
-            if (update.Type != Telegram.Bot.Types.Enums.UpdateType.Message)
+            if (update.Type != UpdateType.Message)
                 return;
             
             var message = update?.Message;
@@ -40,7 +40,7 @@ namespace TgKarBot.API
             {
                 foreach (var entity in message.Entities)
                 {
-                    if ((entity?.Type) == null || entity?.Type != Telegram.Bot.Types.Enums.MessageEntityType.BotCommand)
+                    if ((entity?.Type) == null || entity?.Type != MessageEntityType.BotCommand)
                         continue;
 
                     string command = message.Text.Substring(entity.Offset, entity.Length);
@@ -73,6 +73,11 @@ namespace TgKarBot.API
                         else text = await Logic.Teams.RegTeam(splitMessage[1], message.From.Id);
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Попытка зарегистрировать команду: {text}");
+                        break;
+                    case Constants.Commands.StartGame:
+                        text = await Logic.Teams.StartGame(message.From.Id);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Попытка начать игру: {text}");
                         break;
                     case Constants.Commands.Ask:
                         text = await Logic.Asks.CheckAsk(message.From.Id, message.Text);
@@ -112,6 +117,24 @@ namespace TgKarBot.API
                     case Constants.Commands.Help:
                         await botClient.ForwardMessageAsync(Constants.ChatId.AdminChatId, message.Chat.Id, message.MessageId);
                         StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
+                        break;
+                    case Constants.Commands.GlobalStart:
+                        text = await Logic.Admins.GlobalStart(message.From.Id, message.Text);
+                        var users = await Database.Teams.ReadAllUsersId();
+                        foreach (var userId in users)
+                        {
+                            try
+                            {
+                                await botClient.SendTextMessageAsync(userId, text);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                                StaticLogger.Logger.Info($"Ошибка при отправки сообщения для {userId}. Текст ошибки: {e}.");
+                                throw;
+                            }
+                        }
+                        StaticLogger.Logger.Info($"Сообщение отправлено всем зарегистрированным пользователям. Сообщение: {message.Text}.");
                         break;
                     default:
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);

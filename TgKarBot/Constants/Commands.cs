@@ -5,6 +5,11 @@
         internal const string Start = "/start";
         internal static List<string> StartSynonims = new() { Start, "start", "старт", "начать", "запуск"};
 
+        internal const string GlobalStart = "/globalstart";
+
+        internal const string StartGame = "/startgame";
+        internal static List<string> StartGameSynonims = new() { StartGame, "startgame", "стартигры", "начатьигру", "запускигры" };
+
         internal const string RegTeam = "/regteam";
         internal static List<string> RegTeamSynonims = new() { RegTeam, "team", "reg", "регистрация", "команда" };
         internal const string RegTeamSample = $"{RegTeam} id";
@@ -39,7 +44,8 @@
             StartSynonims,
             RegTeamSynonims,
             AskSynonims,
-            HelpSynonims
+            HelpSynonims,
+            StartGameSynonims
         };
     }
 }

@@ -4,6 +4,8 @@ namespace TgKarBot.Database.Models
 {
     internal class TeamModel
     {
+        public const string TeamIdparam = "@teamId";
+
         public TeamModel(string teamId, string userId)
         {
             TeamId = teamId;
@@ -12,6 +14,6 @@ namespace TgKarBot.Database.Models
         [Key]
         public string TeamId { get; set; }
         public string UserId { get; set; }
-        public string RegistrationTime { get; }
+        public string StartTime { get; }
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Configuration;
+using System.Collections.Specialized;
 using System.Text;
-using System.Threading.Tasks;
 using TgKarBot.Constants;
 using TgKarBot.Logic.Helpers;
 
@@ -78,6 +76,30 @@ namespace TgKarBot.Logic
         {
             var adminId = await Database.Admins.ReadAsync(userId.ToString());
             return adminId != null;
+        }
+
+        internal static async Task<string> GlobalStart(long userId, string message)
+        {
+            if (!await CheckAdmins(userId)) return Messages.OnlyForAdmins;
+
+            var split = message.Split();
+            if (split.Length > 1 && split[1] == "0")
+            {
+                ConfigurationManager.AppSettings.Set("GameStarted", "false");
+                var text = new StringBuilder(Messages.AdminStopGame);
+
+                if (split.Length <= 2) return text.ToString();
+
+                for (var i = 2; i < split.Length; i++)
+                {
+                    text.Append($" {split}");
+                }
+
+                return text.ToString();
+            }
+
+            ConfigurationManager.AppSettings.Set("GameStarted", "true");
+            return Messages.GameGlobalStart;
         }
     }
 }
