@@ -54,19 +54,47 @@ namespace TgKarBot.Logic
         {
             return await GeneralActions.AddSomething(
                 userId, message,
-                Database.Asks.ReadAsync,
-                Database.Asks.CreateAsync,
+                Database.Rewards.ReadAsync,
+                Database.Rewards.CreateAsync,
                 Messages.RewardAlreadyExist,
                 Messages.RewardSuccessCreation,
                 2);
+        }
+
+        internal static async Task<string> SetRewardType(long userId, string message)
+        {
+            if (!await Admins.CheckAdmins(userId)) return Messages.OnlyForAdmins;
+
+            var splittedMessage = message.Split();
+            var id = splittedMessage[1];
+            if (await Database.Rewards.ReadAsync(id) == null)
+                return Messages.RewardDoesntExist;
+
+            var isMain = splittedMessage[2] != "0";
+            int time;
+            if (!isMain)
+            {
+                try
+                {
+                    time = int.Parse(splittedMessage[3]);
+                }
+                catch (Exception)
+                {
+                    return Messages.IncorrectInput + Commands.SetRewardTypeSample;
+                }
+                await Database.Rewards.UpdateTypeAsync(id, isMain, time);
+            }
+            else
+                await Database.Rewards.UpdateTypeAsync(id, isMain);
+            return Messages.RewardSuccessUpdateType;
         }
 
         internal static async Task<string> DeleteReward(long userId, string message)
         {
             return await GeneralActions.DeleteSomething(
                 userId, message,
-                Database.Asks.ReadAsync,
-                Database.Asks.DeleteAsync,
+                Database.Rewards.ReadAsync,
+                Database.Rewards.DeleteAsync,
                 Messages.RewardDoesntExist,
                 Messages.RewardSuccessDelete);
         }

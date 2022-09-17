@@ -32,6 +32,8 @@
 
         internal const string AddReward = "/addreward";
         internal const string AddRewardSample = $"{AddReward} (номер вопроса) (ответ)";
+        internal const string SetRewardType = "/setrewardtype";
+        internal const string SetRewardTypeSample = $"{AddReward} (номер вопроса) (isMain) (ВРЕМЯ)";
 
         internal const string DeleteReward = "/delreward";
         internal const string DeleteRewardSample = $"{AddReward} (номер вопроса)";

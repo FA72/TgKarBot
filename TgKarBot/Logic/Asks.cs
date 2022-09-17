@@ -1,4 +1,7 @@
-﻿using TgKarBot.Logic.Helpers;
+﻿using Telegram.Bot.Types;
+using TgKarBot.Constants;
+using TgKarBot.Database.Models;
+using TgKarBot.Logic.Helpers;
 
 namespace TgKarBot.Logic
 {
@@ -14,30 +17,37 @@ namespace TgKarBot.Logic
         {
             var teamId = await Teams.CheckRegistration(userId);
             if (teamId == null)
-                return Constants.Messages.NotRegistered;
+                return Messages.NotRegistered;
 
             var splittedMessage = message.Split();
             if (splittedMessage.Length < 3)
-                return Constants.Messages.IncorrectInput + Constants.Commands.AskSample;
+                return Messages.IncorrectInput + Commands.AskSample;
 
             var num = splittedMessage[1];
 
             if (await Database.TeamsProgress.ReadAsync(teamId, num) != null)
-                return Constants.Messages.AlreadyAsked;
+                return $"{Messages.AlreadyAsked}\n{(await Database.Rewards.ReadAsync(num)).Reward}";
 
             var ask = Parser.ParseBodyMessage(splittedMessage, 2);
             var correctAsk = await Database.Asks.ReadAsync(num);
 
-            if (correctAsk == null) return Constants.Messages.IncorrectNum;
+            if (correctAsk == null) return Messages.IncorrectNum;
 
-            if (!ask.Equals(correctAsk, StringComparison.OrdinalIgnoreCase)) return Constants.Messages.NotCorrectAsk;
-
-            var isWin = await Teams.SaveProgress(teamId, num);
-
-            if (isWin) return Constants.Messages.WinTheGame;
+            if (!ask.Equals(correctAsk.Trim(), StringComparison.OrdinalIgnoreCase)) return Messages.NotCorrectAsk;
 
             var reward = await Database.Rewards.ReadAsync(num);
-            return $"{Constants.Messages.Correct}\n{reward}";
+            var isWin = await Teams.SaveProgress(teamId, num);
+
+            if (reward.IsMain)
+            {
+                if (isWin) return Messages.WinTheGame;
+            }
+            else
+            {
+                await Database.Teams.UpdateBonusTimeAsync(teamId, (int) reward.TimeBonus);
+            }
+
+            return $"{Messages.Correct}\n{reward.Reward}";
         }
     }
 }

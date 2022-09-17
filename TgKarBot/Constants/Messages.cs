@@ -2,7 +2,7 @@
 {
     internal class Messages
     {
-        internal const string AlreadyAsked = "Вы уже корректно ответили на этот вопрос";
+        internal const string AlreadyAsked = "Вы уже корректно ответили на этот вопрос. Напоминаем награду:";
         internal const string AlreadyRegistered = "Вы уже зарегистрированы на игру";
         internal const string Angry = "КАР! Я НЕ МОГУ РАБОТАТЬ В ТАКИХ УСЛОВИЯХ, ВАС СЛИШКОМ МНОГО! (бот не поддерживает групповые чаты)";
         internal const string AdminAlreadyExist = "Этот пользователь уже админ";
@@ -34,6 +34,7 @@
         internal const string RewardAlreadyExist = "Под этим номером награда уже существует";
         internal const string RewardDoesntExist = "Под этим номером награда не существует";
         internal const string RewardSuccessCreation = "Награда успешно создана";
+        internal const string RewardSuccessUpdateType = "Награда успешно обновлена";
         internal const string RewardSuccessDelete = "Награда успешно удалена";
         internal const string Start = "Кар!";
         internal const string WinTheGame = "Поздравляем вас! Вы прошли игру!";

@@ -54,7 +54,7 @@ namespace TgKarBot.Logic
             await Database.TeamsProgress.CreateAsync(teamId, num);
             var readAllProgress = await Database.TeamsProgress.ReadAllAsync(teamId);
             // TODO Подумать, что делать, с этим и как определять победу;
-            var isWin = readAllProgress.Count >= 10;
+            var isWin = readAllProgress.Count >= await Database.Rewards.GetMainTaskCount();
             return isWin;
         }
     }

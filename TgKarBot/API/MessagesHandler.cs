@@ -109,6 +109,11 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Добавлена награда за правильный ответ: {message.Text}. Результат: {text}");
                         break;
+                    case Constants.Commands.SetRewardType:
+                        text = await Logic.Admins.SetRewardType(message.From.Id, message.Text);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Изменён тип награды: {message.Text}. Результат: {text}");
+                        break;
                     case Constants.Commands.DeleteReward:
                         text = await Logic.Admins.DeleteReward(message.From.Id, message.Text);
                         await botClient.SendTextMessageAsync(message.Chat, text);

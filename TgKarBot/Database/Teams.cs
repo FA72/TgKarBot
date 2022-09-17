@@ -8,7 +8,7 @@ namespace TgKarBot.Database
         public static async Task CreateAsync(string userId, string teamId)
         {
             await using var context = new TgBotDatabaseContext();
-            await context.Teams.AddAsync(new TeamModel(userId, teamId));
+            await context.Teams.AddAsync(new TeamModel(teamId, userId));
             await context.SaveChangesAsync();
         }
 
@@ -48,6 +48,17 @@ namespace TgKarBot.Database
             if (obj != null)
             {
                 obj.UserId = userId;
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public static async Task UpdateBonusTimeAsync(string teamId, int bonusTime)
+        {
+            await using var context = new TgBotDatabaseContext();
+            var obj = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
+            if (obj != null)
+            {
+                obj.BonusTime += bonusTime;
                 await context.SaveChangesAsync();
             }
         }
