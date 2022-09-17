@@ -148,7 +148,7 @@ namespace TgKarBot.API
                         StaticLogger.Logger.Info($"Сообщение отправлено всем зарегистрированным пользователям. Сообщение: {message.Text}.");
                         break;
                     case Constants.Commands.GlobalFinish:
-                        text = await Logic.Admins.GlobalStart(message.From.Id, message.Text);
+                        text = await Logic.Admins.GlobalFinish(message.From.Id, message.Text);
                         users = await Database.Teams.ReadAllUsersId();
                         foreach (var userId in users)
                         {
