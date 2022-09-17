@@ -42,15 +42,15 @@
         internal const string DeleteReward = "/delreward";
         internal const string DeleteRewardSample = $"{AddReward} (номер вопроса)";
 
-        internal const string Help = "/help";
-        internal static List<string> HelpSynonims = new() { Help, "help", "помощь" };
+        internal const string Support = "/support";
+        internal static List<string> SupportSynonims = new() { Support, "помощь", "поддежка" };
 
         internal static List<List<string>> Synonims = new()
         {
             StartSynonims,
             RegTeamSynonims,
             AskSynonims,
-            HelpSynonims,
+            SupportSynonims,
             StartGameSynonims
         };
     }

@@ -60,6 +60,7 @@ namespace TgKarBot.API
             string text;
             try
             {
+                List<string>? users;
                 switch (command.ToLower())
                 {
                     case Constants.Commands.Start:
@@ -124,13 +125,13 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Удалёна награда за правильный ответ: {message.Text}. Результат: {text}");
                         break;
-                    case Constants.Commands.Help:
+                    case Constants.Commands.Support:
                         await botClient.ForwardMessageAsync(Constants.ChatId.AdminChatId, message.Chat.Id, message.MessageId);
                         StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
                         break;
                     case Constants.Commands.GlobalStart:
                         text = await Logic.Admins.GlobalStart(message.From.Id, message.Text);
-                        var users = await Database.Teams.ReadAllUsersId();
+                        users = await Database.Teams.ReadAllUsersId();
                         foreach (var userId in users)
                         {
                             try
@@ -148,7 +149,7 @@ namespace TgKarBot.API
                         break;
                     case Constants.Commands.GlobalFinish:
                         text = await Logic.Admins.GlobalStart(message.From.Id, message.Text);
-                        var users = await Database.Teams.ReadAllUsersId();
+                        users = await Database.Teams.ReadAllUsersId();
                         foreach (var userId in users)
                         {
                             try
