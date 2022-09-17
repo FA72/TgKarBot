@@ -152,7 +152,7 @@ namespace TgKarBot.API
 
         public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
-            StaticLogger.Logger.Info(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
+            StaticLogger.Logger.Error(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
         }
     }
