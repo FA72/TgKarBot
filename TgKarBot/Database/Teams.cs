@@ -26,18 +26,19 @@ namespace TgKarBot.Database
             return team.IsEnd;
         }
 
-        public static async Task<int?> ReadBonusTimeAsync(string teamId)
+        public static async Task<(int?, int?)> ReadBonusTimeAndPenaltyAsync(string teamId)
         {
             await using var context = new TgBotDatabaseContext();
             var team = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
-            return team?.BonusTime;
+            return (team?.BonusTime, team?.Penalty);
         }
+
 
         public static async Task<string?> ReadStartTimeAsync(string teamId)
         {
             await using var context = new TgBotDatabaseContext();
             var team = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
-            return team?.StartTime;
+            return team?.StartTime?.ToString("G");
         }
 
         public static async Task<string?> ReadByUserId(string userId)
@@ -56,10 +57,13 @@ namespace TgKarBot.Database
 
         public static async Task StartGame(string teamId)
         {
-
             await using var context = new TgBotDatabaseContext();
-            var parameters = new Microsoft.Data.SqlClient.SqlParameter(TeamModel.TeamIdparam, teamId);
-            context.Teams.FromSqlRaw($"StartForTeam {TeamModel.TeamIdparam}", parameters);
+            var obj = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
+            if (obj != null)
+            {
+                obj.StartTime = DateTime.Now;
+                await context.SaveChangesAsync();
+            }
         } 
 
         public static async Task UpdateAsync(string teamId, string userId)
@@ -91,6 +95,17 @@ namespace TgKarBot.Database
             if (obj != null)
             {
                 obj.BonusTime += bonusTime;
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public static async Task AddPenaltyAsync(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+            var obj = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
+            if (obj != null)
+            {
+                obj.Penalty ++;
                 await context.SaveChangesAsync();
             }
         }

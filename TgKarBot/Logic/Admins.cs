@@ -121,7 +121,7 @@ namespace TgKarBot.Logic
 
                 for (var i = 2; i < split.Length; i++)
                 {
-                    text.Append($" {split}");
+                    text.Append($" {split[i]}");
                 }
 
                 return text.ToString();
@@ -137,7 +137,7 @@ namespace TgKarBot.Logic
 
             var text = new StringBuilder();
             var split = message.Split();
-            if (split.Length < 1 || split[1] == "1")
+            if (split.Length < 2 || split[1] == "1")
             {
                 ConfigurationManager.AppSettings.Set("GameFinished", "true");
                 text.Append(Messages.FinishGame);
@@ -149,7 +149,7 @@ namespace TgKarBot.Logic
 
             for (var i = 2; i < split.Length; i++)
             {
-                text.Append($" {split}");
+                text.Append($" {split[i]}");
             }
 
             return text.ToString();

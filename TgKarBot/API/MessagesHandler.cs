@@ -80,8 +80,8 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Попытка начать игру: {text}");
                         break;
-                    case Constants.Commands.EndGame:
-                        text = await Logic.Teams.EndGame(message.From.Id);
+                    case Constants.Commands.Progress:
+                        text = await Logic.Teams.Progress(message.From.Id);
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Попытка начать игру: {text}");
                         break;
