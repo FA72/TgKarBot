@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Text;
 using TgKarBot.Constants;
 using TgKarBot.Logic.Helpers;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TgKarBot.Logic
 {
@@ -128,6 +129,30 @@ namespace TgKarBot.Logic
 
             ConfigurationManager.AppSettings.Set("GameStarted", "true");
             return Messages.GameGlobalStart;
+        }
+
+        internal static async Task<string> GlobalFinish(long userId, string message)
+        {
+            if (!await CheckAdmins(userId)) return Messages.OnlyForAdmins;
+
+            var text = new StringBuilder();
+            var split = message.Split();
+            if (split.Length < 1 || split[1] == "1")
+            {
+                ConfigurationManager.AppSettings.Set("GameFinished", "true");
+                text.Append(Messages.FinishGame);
+            }
+
+            ConfigurationManager.AppSettings.Set("GameFinished", "false");
+
+            if (split.Length <= 2) return text.ToString();
+
+            for (var i = 2; i < split.Length; i++)
+            {
+                text.Append($" {split}");
+            }
+
+            return text.ToString();
         }
     }
 }

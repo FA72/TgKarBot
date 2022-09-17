@@ -79,6 +79,11 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Попытка начать игру: {text}");
                         break;
+                    case Constants.Commands.EndGame:
+                        text = await Logic.Teams.EndGame(message.From.Id);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Попытка начать игру: {text}");
+                        break;
                     case Constants.Commands.Ask:
                         text = await Logic.Asks.CheckAsk(message.From.Id, message.Text);
                         await botClient.SendTextMessageAsync(message.Chat, text);
@@ -124,6 +129,24 @@ namespace TgKarBot.API
                         StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
                         break;
                     case Constants.Commands.GlobalStart:
+                        text = await Logic.Admins.GlobalStart(message.From.Id, message.Text);
+                        var users = await Database.Teams.ReadAllUsersId();
+                        foreach (var userId in users)
+                        {
+                            try
+                            {
+                                await botClient.SendTextMessageAsync(userId, text);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                                StaticLogger.Logger.Info($"Ошибка при отправки сообщения для {userId}. Текст ошибки: {e}.");
+                                throw;
+                            }
+                        }
+                        StaticLogger.Logger.Info($"Сообщение отправлено всем зарегистрированным пользователям. Сообщение: {message.Text}.");
+                        break;
+                    case Constants.Commands.GlobalFinish:
                         text = await Logic.Admins.GlobalStart(message.From.Id, message.Text);
                         var users = await Database.Teams.ReadAllUsersId();
                         foreach (var userId in users)

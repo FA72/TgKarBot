@@ -16,5 +16,6 @@ namespace TgKarBot.Database.Models
         public string UserId { get; set; }
         public string StartTime { get; }
         public int BonusTime { get; set; } 
+        public bool IsEnd { get; set; }
     }
 }

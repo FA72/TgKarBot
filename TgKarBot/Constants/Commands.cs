@@ -6,6 +6,7 @@
         internal static List<string> StartSynonims = new() { Start, "start", "старт", "начать", "запуск"};
 
         internal const string GlobalStart = "/globalstart";
+        internal const string GlobalFinish = "/globalfinish";
 
         internal const string StartGame = "/startgame";
         internal static List<string> StartGameSynonims = new() { StartGame, "startgame", "стартигры", "начатьигру", "запускигры" };
@@ -13,6 +14,9 @@
         internal const string RegTeam = "/regteam";
         internal static List<string> RegTeamSynonims = new() { RegTeam, "team", "reg", "регистрация", "команда" };
         internal const string RegTeamSample = $"{RegTeam} id";
+
+        internal const string EndGame = "/endgame";
+
 
         internal const string Ask = "/ask";
         internal static List<string> AskSynonims = new() { Ask, "ask", "Ответ" };

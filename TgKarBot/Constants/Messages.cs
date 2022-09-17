@@ -14,9 +14,12 @@
         internal const string AskDoesntExist = "Под этим номером ответа не существует";
         internal const string AskSuccessCreation = "Ответ успешно добавлен";
         internal const string AskSuccessDelete = "Ответ успешно удален";
-        internal const string Correct = "Правильный ответ. За это вам полагается: ";
+        internal const string Correct = "Правильный ответ.";
         internal const string Default = "Кар! Если ты видишь это сообщение, значит что-то пошло не так или ты набрал не ту команду";
         internal const string Error = "Произошла ошибка в работе бота, пожалуйста, свяжитесь с администрацией через @Edgar_Allan_Po_2022_Bot";
+        internal const string EndTheGame = "Поздравляем вас! Вы закончили игру! Вы ответили на ";
+        internal const string EndTheGameTime = "Ваше время прохождения с учётом бонусов: ";
+        internal const string FinishGame = "Время игры истекло! Результаты зафиксированы. Больше ответы приниматься не будут.";
         internal const string DoneTeamRegisteration = "Ваша команда успешно зарегистрирована и закреплена за этим пользователем";
         internal const string GameIsNotStarted = "Игра не начата, пожалуйста, дождитесь объявления о начале игры";
         internal const string GameGlobalStart = "Всем привет! Игра начинается, вы можете ввести команду /startgame для начала игры. " +
@@ -28,15 +31,16 @@
         internal const string NotCorrectAsk = "Ответ неверный";
         internal const string NotRegistered = "Вы не зарегистрированы, как участник, зарегистрируйте," +
                                               " пожалуйста, вашу команду или обратитесь к @Edgar_Allan_Po_2022_Bot";
+        internal const string NotStarted = "Вы не начали игру. Введите, пожалуйста, команду /startgame";
         internal const string OnlyForAdmins = "Эта команда только для админов";
         internal const string OtherUser = "Ваша команда уже зарегистрирована на игру, если хотите переместить" +
                                           " регистрацию на другое устройство, обратитесь к @Edgar_Allan_Po_2022_Bot";
+        internal const string Reward = "За правильный ответ вам полагается: ";
         internal const string RewardAlreadyExist = "Под этим номером награда уже существует";
         internal const string RewardDoesntExist = "Под этим номером награда не существует";
         internal const string RewardSuccessCreation = "Награда успешно создана";
         internal const string RewardSuccessUpdateType = "Награда успешно обновлена";
         internal const string RewardSuccessDelete = "Награда успешно удалена";
         internal const string Start = "Кар!";
-        internal const string WinTheGame = "Поздравляем вас! Вы прошли игру!";
     }
 }

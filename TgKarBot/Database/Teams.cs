@@ -19,6 +19,27 @@ namespace TgKarBot.Database
             return team?.UserId;
         }
 
+        public static async Task<bool> ReadEndStateAsync(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+            var team = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
+            return team.IsEnd;
+        }
+
+        public static async Task<int?> ReadBonusTimeAsync(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+            var team = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
+            return team?.BonusTime;
+        }
+
+        public static async Task<string?> ReadStartTimeAsync(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+            var team = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
+            return team?.StartTime;
+        }
+
         public static async Task<string?> ReadByUserId(string userId)
         {
             await using var context = new TgBotDatabaseContext();
@@ -48,6 +69,17 @@ namespace TgKarBot.Database
             if (obj != null)
             {
                 obj.UserId = userId;
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public static async Task EndGame(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+            var obj = await context.Teams.FirstOrDefaultAsync(x => x.TeamId == teamId);
+            if (obj != null)
+            {
+                obj.IsEnd = true;
                 await context.SaveChangesAsync();
             }
         }

@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types;
+﻿using System.Text;
+using Telegram.Bot.Types;
 using TgKarBot.Constants;
 using TgKarBot.Database.Models;
 using TgKarBot.Logic.Helpers;
@@ -19,6 +20,10 @@ namespace TgKarBot.Logic
             if (teamId == null)
                 return Messages.NotRegistered;
 
+            var startTimeString = await Database.Teams.ReadStartTimeAsync(teamId);
+            if (startTimeString == null)
+                return Messages.NotStarted;
+
             var splittedMessage = message.Split();
             if (splittedMessage.Length < 3)
                 return Messages.IncorrectInput + Commands.AskSample;
@@ -35,19 +40,39 @@ namespace TgKarBot.Logic
 
             if (!ask.Equals(correctAsk.Trim(), StringComparison.OrdinalIgnoreCase)) return Messages.NotCorrectAsk;
 
+            var output = new StringBuilder($"{Messages.Correct}\n");
+
+            var (isWin, progress, maxAsks) = await Teams.SaveProgress(teamId, num);
             var reward = await Database.Rewards.ReadAsync(num);
-            var isWin = await Teams.SaveProgress(teamId, num);
 
-            if (reward.IsMain)
-            {
-                if (isWin) return Messages.WinTheGame;
-            }
-            else
-            {
+            if (!reward.IsMain) 
                 await Database.Teams.UpdateBonusTimeAsync(teamId, (int) reward.TimeBonus);
+
+            var bonusTime = await Database.Teams.ReadBonusTimeAsync(teamId);
+
+            if (isWin)
+            {
+                await Database.Teams.EndGame(teamId);
+                var time = await GetTime(startTimeString, teamId, bonusTime);
+                var wingameMessage = $"{Messages.EndTheGame}{progress}/{maxAsks}\n{Messages.EndTheGameTime}{time}";
+
+                output.Append(wingameMessage);
+            }
+            else 
+            {
+                output.Append($"На данный момент отвечено на {progress} из {maxAsks} вопросов. Также заработано {bonusTime} бонусного времени.\n" +
+                               $"{Messages.Reward}\n {reward.Reward}");
             }
 
-            return $"{Messages.Correct}\n{reward.Reward}";
+            return output.ToString();
+        }
+
+        public static async Task<string> GetTime(string startTimeString, string teamId, int? bonusTime)
+        {
+            var lastTime = await Database.TeamsProgress.ReadLastAskTimeAsync(teamId);
+            var startTime = DateTime.Parse(startTimeString);
+            var time = (lastTime - startTime - TimeSpan.FromMinutes((double) bonusTime)).ToString();
+            return time;
         }
     }
 }
