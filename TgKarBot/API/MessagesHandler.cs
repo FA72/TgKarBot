@@ -169,7 +169,7 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
                         StaticLogger.Logger.Info("Default message is sended");
                         break;
-                }
+                }   
             }
             catch (Exception e)
             {
