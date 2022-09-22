@@ -59,7 +59,7 @@ namespace TgKarBot.Logic
             tasks = await Database.Tasks.ReadAllAsync();
             foreach (var task in tasks)
             {
-                textBuilder.Append($"\n{task.Id}. {task.Text}");
+                textBuilder.Append($"\n\n{task.Id}. {task.Text}");
             }
         }
 

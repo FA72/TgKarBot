@@ -37,7 +37,7 @@ namespace TgKarBot.Logic
             var num = splittedMessage[1];
 
             if (await Database.TeamsProgress.ReadAsync(teamId, num) != null)
-                return $"{Messages.AlreadyAsked}\n{(await Database.Rewards.ReadAsync(num)).Reward}";
+                return $"{Messages.AlreadyAsked}\n\n{(await Database.Rewards.ReadAsync(num)).Reward}";
 
             var ask = Parser.ParseBodyMessage(splittedMessage, 2);
             var correctAsk = await Database.Asks.ReadAsync(num);
@@ -72,7 +72,7 @@ namespace TgKarBot.Logic
             else 
             {
                 output.Append($"На данный момент отвечено на {progress} из {maxAsks} основных вопросов. Также заработано {bonusTime} минут бонусного времени.\n" +
-                               $"{Messages.Reward}\n {reward.Reward}");
+                               $"{Messages.Reward}\n\n {reward.Reward}");
             }
 
             return output.ToString();
