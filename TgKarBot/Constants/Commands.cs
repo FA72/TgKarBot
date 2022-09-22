@@ -3,6 +3,7 @@
     internal class Commands
     {
         internal const string Start = "/start";
+        internal const string Help = "/help";
         internal static List<string> StartSynonims = new() { Start, "start", "старт", "начать", "запуск"};
 
         internal const string GlobalStart = "/globalstart";

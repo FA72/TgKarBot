@@ -30,7 +30,7 @@ namespace TgKarBot.API
                         return;
 
                     default:
-                        await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Angry);
+                        await botClient.SendTextMessageAsync(message.Chat.Id, Constants.Messages.Angry);
                         StaticLogger.Logger.Info("Попытка работы с ботом в группе");
                         return;
                 }
@@ -63,6 +63,7 @@ namespace TgKarBot.API
                 List<string>? users;
                 switch (command.ToLower())
                 {
+                    case Constants.Commands.Help:
                     case Constants.Commands.Start:
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Start);
                         StaticLogger.Logger.Info($"{Constants.Commands.Start} is done");
