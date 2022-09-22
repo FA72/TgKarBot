@@ -1,16 +1,17 @@
-﻿using Telegram.Bot;
+﻿using System.Configuration;
+using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
 
 namespace TgKarBot.API
 {
     internal class Connect
     {
-        internal ITelegramBotClient Bot = new TelegramBotClient(Constants.Tokens.TgToken);
+        private ITelegramBotClient _bot = new TelegramBotClient(token: ConfigurationManager.AppSettings.Get("TgToken"));
         private MessagesHandler _messagesHandler = new MessagesHandler();
 
         internal void Start()
         {
-            Console.WriteLine("Запущен бот " + Bot.GetMeAsync().Result.FirstName);
+            Console.WriteLine("Запущен бот " + _bot.GetMeAsync().Result.FirstName);
             StaticLogger.Logger.Info("Запуск бота");
 
             var cts = new CancellationTokenSource();
@@ -20,7 +21,7 @@ namespace TgKarBot.API
                 AllowedUpdates = { },
             };
 
-            Bot.StartReceiving(
+            _bot.StartReceiving(
                 _messagesHandler.HandleUpdateAsync,
                 _messagesHandler.HandleErrorAsync,
                 receiverOptions,
