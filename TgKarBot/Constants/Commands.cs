@@ -47,6 +47,14 @@
         internal const string Support = "/support";
         internal static List<string> SupportSynonims = new() { Support, "помощь", "поддежка" };
 
+        internal const string Drink = "/drink";
+        internal static List<string> DrinkSynonims = new() { Drink, "drink", "Выпить" };
+        internal const string DrinkSample = $"{Drink}";
+
+        internal const string Next = "/next";
+        internal static List<string> NextSynonims = new() { Next, "next" };
+        internal const string NextSample = $"{Next}";
+
         internal static List<List<string>> Synonims = new()
         {
             StartSynonims,
