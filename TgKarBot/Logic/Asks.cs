@@ -1,6 +1,8 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Text;
 using TgKarBot.Constants;
+using TgKarBot.Database;
 using TgKarBot.Logic.Helpers;
 
 namespace TgKarBot.Logic
@@ -28,7 +30,7 @@ namespace TgKarBot.Logic
             if (startTimeString == null)
                 return Messages.NotStarted;
 
-            var awaitNext = await Database.TeamsProgress.ReadLastDrinkTimeAsync(teamId);
+            var awaitNext = await TeamsProgress.ReadLastDrinkTimeAsync(teamId);
             if (awaitNext.endDrinkTime == null)
             {
                 return Messages.WriteNext;
@@ -46,8 +48,8 @@ namespace TgKarBot.Logic
 
             var num = splittedMessage[1];
 
-            if (await Database.TeamsProgress.ReadAsync(teamId, num) != null)
-                return $"{Messages.AlreadyAsked}\n\n{(await Database.Rewards.ReadAsync(num)).Reward}";
+            if (await TeamsProgress.ReadAsync(teamId, num) != null)
+                return $"{Messages.AlreadyAsked}\n\n{(await Rewards.ReadAsync(num)).Reward}";
 
             var ask = Parser.ParseBodyMessage(splittedMessage, 2);
             var correctAsk = await Database.Asks.ReadAsync(num);
@@ -63,7 +65,7 @@ namespace TgKarBot.Logic
             var output = new StringBuilder($"{Messages.Correct}\n");
 
             var (isWin, progress, maxAsks) = await Teams.SaveProgress(teamId, num);
-            var reward = await Database.Rewards.ReadAsync(num);
+            var reward = await Rewards.ReadAsync(num);
 
             if (!reward.IsMain) 
                 await Database.Teams.UpdateBonusTimeAsync(teamId, (int) reward.TimeBonus);
@@ -95,9 +97,27 @@ namespace TgKarBot.Logic
             return ConfigurationManager.AppSettings.Get("GameFinished") == "true";
         }
 
+        public static async Task<string> Next(long userId)
+        {
+            var teamId = await Teams.CheckRegistration(userId);
+            if (teamId == null)
+                return Messages.NotRegistered;
+
+            var time = await TeamsProgress.ReadLastDrinkTimeAsync(teamId);
+            if (time.endDrinkTime != null)
+            {
+                return Messages.AlreadyContinued;
+            }
+
+            var num = await TeamsProgress.UpdateDrinkTimesAsync(teamId);
+            var reward = await Rewards.ReadAsync(num);
+            return $"{Messages.Reward}\n\n {reward.Reward}";
+
+        }
+
         public static async Task<string> GetTime(string startTimeString, string teamId, int? bonusTime)
         {
-            var lastTime = await Database.TeamsProgress.ReadLastAskTimeAsync(teamId);
+            var lastTime = await TeamsProgress.ReadLastAskTimeAsync(teamId);
             var startTime = DateTime.Parse(startTimeString);
             var time = (lastTime - startTime - TimeSpan.FromMinutes((double) bonusTime)).ToString();
             return time;
