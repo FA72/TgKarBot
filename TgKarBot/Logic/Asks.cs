@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Configuration;
+using System.Text;
 using Telegram.Bot.Types;
 using TgKarBot.Constants;
 using TgKarBot.Database.Models;
@@ -77,7 +78,9 @@ namespace TgKarBot.Logic
             else 
             {
                 output.Append($"На данный момент отвечено на {progress} из {maxAsks} основных вопросов. Также заработано {bonusTime} минут бонусного времени.\n" +
-                               $"{Messages.Reward}\n\n {reward.Reward}");
+                              $"Вы можете остановить время игры и выпить в баре (для этого введите команду /drink) или продолжить игру и увидеть следующее задание" +
+                              $" (для этого введите команду /next.");
+                // todo перенести ревард в метод /next $"{Messages.Reward}\n\n {reward.Reward}");
             }
 
             return output.ToString();
