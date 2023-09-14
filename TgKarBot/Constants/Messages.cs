@@ -19,6 +19,7 @@
         internal const string AskSuccessDelete = "Ответ успешно удален";
         internal const string Correct = "Правильный ответ.";
         internal const string Default = "Кар! Если ты видишь это сообщение, значит что-то пошло не так или ты набрал не ту команду";
+        internal const string Drink = "Ваше время приостановлено, можете спокойно посидеть в баре. Для продолжения игры и получения следующего задания введите /next";
         internal const string Error = "Произошла ошибка в работе бота, пожалуйста, свяжитесь с администрацией через команду /support";
         internal const string EndTheGame = "Поздравляем вас! Вы закончили игру! Вы ответили на ";
         internal const string EndTheGameTime = "Ваше время прохождения с учётом бонусов: ";
@@ -68,7 +69,6 @@
                                       $"/support — связь с организатором. Команду вводите в формате /support [ваше сообщение]. Пример:\r\n" +
                                       $"/support Что каркнул ворон?\r\n\r\n" +
                                       $"Готовы начинать? Регистрируйте команду при помощи /regteam и вперёд!";
-
         internal const string WriteNext = $"Чтобы продолжить играть, введите /next";
     }
 }

@@ -31,14 +31,13 @@ namespace TgKarBot.Database
         public static async Task<DateTime> ReadLastAskTimeAsync(string teamId)
         {
             await using var context = new TgBotDatabaseContext();
-            var query = context.TeamsProgress
+            return await context.TeamsProgress
                 .Where(tp => tp.TeamId == teamId)
-                .Select(tp => tp.Time);
-            var list = query.ToList();
-            var date = list.Select(date => new { Secs = Math.Abs((DateTime.MaxValue - date).TotalSeconds), Date = date })
-                .OrderBy(x => x.Secs).First();
-            return date.Date;
+                .OrderByDescending(tp => tp.Time)
+                .Select(tp => tp.Time)
+                .FirstOrDefaultAsync();
         }
+
 
         public static async Task<(DateTime? startDrinkTime, DateTime? endDrinkTime)> ReadLastDrinkTimeAsync(string teamId)
         {
@@ -92,6 +91,17 @@ namespace TgKarBot.Database
             }
         }
 
+        public static async Task<TimeSpan> CalculateTotalDrinkTimeAsync(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+
+            var drinkTimes = await context.TeamsProgress
+                .Where(tp => tp.TeamId == teamId && tp.StartDrinkTime.HasValue && tp.EndDrinkTime.HasValue)
+                .Select(tp => new { Start = tp.StartDrinkTime.Value, End = tp.EndDrinkTime.Value })
+                .ToListAsync();
+
+            return drinkTimes.Aggregate(TimeSpan.Zero, (current, time) => current + (time.End - time.Start));
+        }
 
         public static async Task<DateTime?> ReadAskTimeAsync(string teamId, string askId)
         {
