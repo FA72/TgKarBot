@@ -132,6 +132,14 @@ namespace TgKarBot.API
                         await botClient.ForwardMessageAsync(Constants.ChatId.AdminChatId, message.Chat.Id, message.MessageId);
                         StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
                         break;
+                    case Constants.Commands.Drink:
+                        text = Logic.Asks.Drink(message.From.Id);
+                        StaticLogger.Logger.Info($"Попытка выпить: {message.Text}. Результат: {text}");
+                        break;
+                    case Constants.Commands.Next:
+                        text = Logic.Asks.Next(message.From.Id);
+                        StaticLogger.Logger.Info($"Попытка продолжить игру: {message.Text}. Результат: {text}");
+                        break;
                     case Constants.Commands.GlobalStart:
                         text = await Logic.Admins.GlobalStart(message.From.Id, message.Text);
                         users = await Database.Teams.ReadAllUsersId();
