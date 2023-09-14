@@ -53,6 +53,28 @@ namespace TgKarBot.Database
             return (result.StartDrinkTime, result.EndDrinkTime);
         }
 
+        public static async Task UpdateDrinkTimesAsync(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+
+            var teamProgress = await context.TeamsProgress
+                .Where(tp => tp.TeamId == teamId)
+                .OrderByDescending(tp => tp.Time)
+                .FirstOrDefaultAsync();
+
+            if (teamProgress != null)
+            {
+                var currentTime = DateTime.Now;
+
+                teamProgress.StartDrinkTime ??= currentTime;
+
+                teamProgress.EndDrinkTime = currentTime;
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+
         public static async Task<DateTime?> ReadAskTimeAsync(string teamId, string askId)
         {
             await using var context = new TgBotDatabaseContext();
