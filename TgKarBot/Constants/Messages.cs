@@ -3,6 +3,7 @@
     internal class Messages
     {
         internal const string AlreadyAsked = "Вы уже корректно ответили на этот вопрос. Напоминаем награду:";
+        internal const string AlreadyContinued = "Вы уже продолжили игру";
         internal const string AlreadyRegistered = "Вы уже зарегистрированы на игру. Чтобы начать дождитесть 19:30 пятницы, после чего можете начать при помощи команды /startgame";
         internal const string AlreadyStarted = "Вы уже начали игру";
         internal const string AlreadyEnd = "Вы уже закончили игру и не можете более отвечать на бонусные вопросы";
