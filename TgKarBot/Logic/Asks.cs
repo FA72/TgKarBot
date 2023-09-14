@@ -1,8 +1,6 @@
 ﻿using System.Configuration;
 using System.Text;
-using Telegram.Bot.Types;
 using TgKarBot.Constants;
-using TgKarBot.Database.Models;
 using TgKarBot.Logic.Helpers;
 
 namespace TgKarBot.Logic
@@ -29,6 +27,12 @@ namespace TgKarBot.Logic
             var startTimeString = await Database.Teams.ReadStartTimeAsync(teamId);
             if (startTimeString == null)
                 return Messages.NotStarted;
+
+            var awaitNext = await Database.TeamsProgress.ReadLastDrinkTimeAsync(teamId);
+            if (awaitNext.endDrinkTime == null)
+            {
+                return Messages.WriteNext;
+            }
 
             var splittedMessage = message.Split();
             if (splittedMessage.Length < 3)
