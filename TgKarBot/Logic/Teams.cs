@@ -11,6 +11,12 @@ namespace TgKarBot.Logic
     {
         public static async Task<string> RegTeam(string teamId, long userId)
         {
+            var stat = ConfigurationManager.AppSettings.Get("GameFinished");
+            if (ConfigurationManager.AppSettings.Get("GameFinished") == "true")
+            {
+                return "Игра завершена(";
+            }
+
             var team = await Database.Teams.ReadByUserId(userId.ToString());
             if (team != null)
             {
@@ -29,6 +35,11 @@ namespace TgKarBot.Logic
 
         public static async Task<string> StartGame(long userId)
         {
+            if (ConfigurationManager.AppSettings.Get("GameFinished") == "true")
+            {
+                return "Игра завершена(";
+            }
+
             var teamId = await CheckRegistration(userId);
             
             if (teamId is null) return Messages.NotRegistered;

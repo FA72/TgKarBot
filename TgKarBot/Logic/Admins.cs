@@ -142,8 +142,8 @@ namespace TgKarBot.Logic
                 ConfigurationManager.AppSettings.Set("GameFinished", "true");
                 text.Append(Messages.FinishGame);
             }
-
-            ConfigurationManager.AppSettings.Set("GameFinished", "false");
+            else
+                ConfigurationManager.AppSettings.Set("GameFinished", "false");
 
             if (split.Length <= 2) return text.ToString();
 

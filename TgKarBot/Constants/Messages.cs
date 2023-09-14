@@ -28,7 +28,7 @@
         internal const string GameGlobalStart = "Всем привет! Игра начинается, вы можете ввести команду /startgame для начала игры. " +
                                           "После этого вы получите задания и начнётся отсчёт времени. Поэтому, рекомендуем вам начинать у метро Сенная.";
         internal const string GameStart = "Вы начали игру! С текущего момента начался отсчёт времени. Время старта: ";
-        internal const string GameStartTasks = "Ваши первые пять заданий:";
+        internal const string GameStartTasks = "На вопросы можно отвечать в любом порядке. Ваши первые пять заданий:";
         internal const string IncorrectInput = "Неправильно введённые данные, пожалуйста, введите команду по шаблону: ";
         internal const string IncorrectNum = "Неверный номер вопроса";
         internal const string NotCorrectAsk = "Ответ неверный. За это вам добавлены 3 минуты к итоговому времени";

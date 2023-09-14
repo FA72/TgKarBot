@@ -16,6 +16,11 @@ namespace TgKarBot.Logic
         /// <returns></returns>
         public static async Task<string> CheckAsk(long userId, string message)
         {
+            if (IsGameFinished())
+            {
+                return "Игра завершена( Больше ответы приниматься не будут";
+            }
+
             var teamId = await Teams.CheckRegistration(userId);
             if (teamId == null)
                 return Messages.NotRegistered;
@@ -76,6 +81,11 @@ namespace TgKarBot.Logic
             }
 
             return output.ToString();
+        }
+
+        private static bool IsGameFinished()
+        {
+            return ConfigurationManager.AppSettings.Get("GameFinished") == "true";
         }
 
         public static async Task<string> GetTime(string startTimeString, string teamId, int? bonusTime)

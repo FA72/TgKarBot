@@ -1,6 +1,8 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using TgKarBot.Constants;
+using TgKarBot.Logic.Helpers;
 
 namespace TgKarBot.API
 {
@@ -150,6 +152,25 @@ namespace TgKarBot.API
                         break;
                     case Constants.Commands.GlobalFinish:
                         text = await Logic.Admins.GlobalFinish(message.From.Id, message.Text);
+                        users = await Database.Teams.ReadAllUsersId();
+                        foreach (var userId in users)
+                        {
+                            try
+                            {
+                                await botClient.SendTextMessageAsync(userId, text);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                                StaticLogger.Logger.Info($"Ошибка при отправки сообщения для {userId}. Текст ошибки: {e}.");
+                                throw;
+                            }
+                        }
+                        StaticLogger.Logger.Info($"Сообщение отправлено всем зарегистрированным пользователям. Сообщение: {message.Text}.");
+                        break;
+                    case Constants.Commands.ToAll:
+                        if (!await Logic.Admins.CheckAdmins(message.From.Id)) return;
+                        text = message.Text.Substring(7);
                         users = await Database.Teams.ReadAllUsersId();
                         foreach (var userId in users)
                         {
