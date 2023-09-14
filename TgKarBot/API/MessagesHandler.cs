@@ -133,11 +133,11 @@ namespace TgKarBot.API
                         StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
                         break;
                     case Constants.Commands.Drink:
-                        text = Logic.Asks.Drink(message.From.Id);
+                        text = await Logic.Asks.Drink(message.From.Id);
                         StaticLogger.Logger.Info($"Попытка выпить: {message.Text}. Результат: {text}");
                         break;
                     case Constants.Commands.Next:
-                        text = Logic.Asks.Next(message.From.Id);
+                        text = await Logic.Asks.Next(message.From.Id);
                         StaticLogger.Logger.Info($"Попытка продолжить игру: {message.Text}. Результат: {text}");
                         break;
                     case Constants.Commands.GlobalStart:
