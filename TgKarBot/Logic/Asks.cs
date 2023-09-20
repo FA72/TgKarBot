@@ -112,7 +112,7 @@ namespace TgKarBot.Logic
 
             var num = await TeamsProgress.UpdateDrinkTimesAsync(teamId);
             var reward = await Rewards.ReadAsync(num);
-            return $"{Messages.Reward}\n\n {reward.Reward}";
+            return $"{Messages.Reward}\n\n{reward.Reward}";
         }
 
         public static async Task<string> Drink(long userId)
