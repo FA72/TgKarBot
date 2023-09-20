@@ -33,7 +33,9 @@ namespace TgKarBot.Logic
             var awaitNext = await TeamsProgress.ReadLastDrinkTimeAsync(teamId);
             if (awaitNext.endDrinkTime == null)
             {
-                return Messages.WriteNext;
+                var test = await TeamsProgress.ReadAllAsync(teamId);
+                if (test.Count != 0)
+                    return Messages.WriteNext;
             }
 
             var splittedMessage = message.Split();
@@ -123,6 +125,11 @@ namespace TgKarBot.Logic
             if (time.endDrinkTime != null)
             {
                 return Messages.AlreadyContinued;
+            }
+
+            if (time.startDrinkTime != null)
+            {
+                return Messages.AlreadyStartDrink;
             }
 
             await TeamsProgress.StartDrinkAsync(teamId);

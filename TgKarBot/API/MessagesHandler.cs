@@ -134,10 +134,12 @@ namespace TgKarBot.API
                         break;
                     case Constants.Commands.Drink:
                         text = await Logic.Asks.Drink(message.From.Id);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Попытка выпить: {message.Text}. Результат: {text}");
                         break;
                     case Constants.Commands.Next:
                         text = await Logic.Asks.Next(message.From.Id);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Попытка продолжить игру: {message.Text}. Результат: {text}");
                         break;
                     case Constants.Commands.GlobalStart:

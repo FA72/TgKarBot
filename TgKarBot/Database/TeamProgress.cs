@@ -28,7 +28,7 @@ namespace TgKarBot.Database
             return teamProgress?.TeamId;
         }
 
-        public static async Task<DateTime> ReadLastAskTimeAsync(string teamId)
+        public static async Task<DateTime?> ReadLastAskTimeAsync(string teamId)
         {
             await using var context = new TgBotDatabaseContext();
             return await context.TeamsProgress
@@ -49,7 +49,7 @@ namespace TgKarBot.Database
                 .Select(tp => new { tp.StartDrinkTime, tp.EndDrinkTime })
                 .FirstOrDefaultAsync();
 
-            return (result.StartDrinkTime, result.EndDrinkTime);
+            return (result?.StartDrinkTime, result?.EndDrinkTime);
         }
 
         public static async Task<string> UpdateDrinkTimesAsync(string teamId)
