@@ -33,14 +33,14 @@ namespace TgKarBot.Database
             await using var context = new TgBotDatabaseContext();
             var query = context.TeamsProgress
                 .Where(tp => tp.TeamId == teamId)
-                .Select(tp => DateTime.Parse(tp.Time));
+                .Select(tp => tp.Time);
             var list = query.ToList();
             var date = list.Select(date => new { Secs = Math.Abs((DateTime.MaxValue - date).TotalSeconds), Date = date })
                 .OrderBy(x => x.Secs).First();
             return date.Date;
         }
 
-        public static async Task<string?> ReadAskTimeAsync(string teamId, string askId)
+        public static async Task<DateTime?> ReadAskTimeAsync(string teamId, string askId)
         {
             await using var context = new TgBotDatabaseContext();
             var teamProgress = await context.TeamsProgress.FirstOrDefaultAsync(x => x.TeamId == teamId && x.AskId == askId);

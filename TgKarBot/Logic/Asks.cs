@@ -28,6 +28,12 @@ namespace TgKarBot.Logic
             if (splittedMessage.Length < 3)
                 return Messages.IncorrectInput + Commands.AskSample;
 
+            var isEndGame = await Database.Teams.ReadEndStateAsync(teamId);
+            if (isEndGame)
+            {
+                return Messages.AlreadyEnd;
+            }
+
             var num = splittedMessage[1];
 
             if (await Database.TeamsProgress.ReadAsync(teamId, num) != null)
@@ -38,7 +44,11 @@ namespace TgKarBot.Logic
 
             if (correctAsk == null) return Messages.IncorrectNum;
 
-            if (!ask.Equals(correctAsk.Trim(), StringComparison.OrdinalIgnoreCase)) return Messages.NotCorrectAsk;
+            if (!ask.Equals(correctAsk.Trim(), StringComparison.OrdinalIgnoreCase))
+            {
+                await Database.Teams.AddPenaltyAsync(teamId);
+                return Messages.NotCorrectAsk;
+            }
 
             var output = new StringBuilder($"{Messages.Correct}\n");
 
@@ -48,19 +58,20 @@ namespace TgKarBot.Logic
             if (!reward.IsMain) 
                 await Database.Teams.UpdateBonusTimeAsync(teamId, (int) reward.TimeBonus);
 
-            var bonusTime = await Database.Teams.ReadBonusTimeAsync(teamId);
+            var (bonusTime, penalty) = await Database.Teams.ReadBonusTimeAndPenaltyAsync(teamId);
+            var penaltyTime = penalty * Numbers.penaltyTime;
 
             if (isWin)
             {
                 await Database.Teams.EndGame(teamId);
                 var time = await GetTime(startTimeString, teamId, bonusTime);
-                var wingameMessage = $"{Messages.EndTheGame}{progress}/{maxAsks}\n{Messages.EndTheGameTime}{time}";
+                var wingameMessage = $"{Messages.EndTheGame}{progress}/{maxAsks}\n{Messages.EndTheGameTime}{time} из них бонусные минуты - {bonusTime} и добавленные за неправильные ответы {penaltyTime} мин.";
 
                 output.Append(wingameMessage);
             }
             else 
             {
-                output.Append($"На данный момент отвечено на {progress} из {maxAsks} вопросов. Также заработано {bonusTime} бонусного времени.\n" +
+                output.Append($"На данный момент отвечено на {progress} из {maxAsks} основных вопросов. Также заработано {bonusTime} минут бонусного времени.\n" +
                                $"{Messages.Reward}\n {reward.Reward}");
             }
 

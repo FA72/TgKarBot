@@ -15,7 +15,7 @@
         internal static List<string> RegTeamSynonims = new() { RegTeam, "team", "reg", "регистрация", "команда" };
         internal const string RegTeamSample = $"{RegTeam} id";
 
-        internal const string EndGame = "/endgame";
+        internal const string Progress = "/progress";
 
 
         internal const string Ask = "/ask";

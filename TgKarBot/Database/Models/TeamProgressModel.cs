@@ -6,9 +6,10 @@
         {
             TeamId = teamId;
             AskId = askId;
+            Time = DateTime.Now;
         }
         public string TeamId { get; set; }
         public string AskId { get; set; }
-        public string Time { get; }
+        public DateTime Time { get; set; }
     }
 }
