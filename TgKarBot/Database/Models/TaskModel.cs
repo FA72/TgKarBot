@@ -2,16 +2,15 @@
 
 namespace TgKarBot.Database.Models
 {
-    internal class AskModel
+    internal class TaskModel
     {
-        public AskModel(string id, string? correctAsk)
+        public TaskModel(string id, string? text)
         {
             Id = id;
-            CorrectAsk = correctAsk;
+            Text = text;
         }
         [Key]
         public string Id { get; set; }
-        public string? CorrectAsk { get; set; }
-
+        public string? Text { get; set; }
     }
 }

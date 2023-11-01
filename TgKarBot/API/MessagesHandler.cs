@@ -1,6 +1,8 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using TgKarBot.Constants;
+using TgKarBot.Logic.Helpers;
 
 namespace TgKarBot.API
 {
@@ -10,7 +12,7 @@ namespace TgKarBot.API
         {
             StaticLogger.Logger.Debug(Newtonsoft.Json.JsonConvert.SerializeObject(update));
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(update));
-            if (update.Type != Telegram.Bot.Types.Enums.UpdateType.Message)
+            if (update.Type != UpdateType.Message)
                 return;
             
             var message = update?.Message;
@@ -30,7 +32,7 @@ namespace TgKarBot.API
                         return;
 
                     default:
-                        await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Angry);
+                        await botClient.SendTextMessageAsync(message.Chat.Id, Constants.Messages.Angry);
                         StaticLogger.Logger.Info("Попытка работы с ботом в группе");
                         return;
                 }
@@ -40,7 +42,7 @@ namespace TgKarBot.API
             {
                 foreach (var entity in message.Entities)
                 {
-                    if ((entity?.Type) == null || entity?.Type != Telegram.Bot.Types.Enums.MessageEntityType.BotCommand)
+                    if ((entity?.Type) == null || entity?.Type != MessageEntityType.BotCommand)
                         continue;
 
                     string command = message.Text.Substring(entity.Offset, entity.Length);
@@ -60,8 +62,10 @@ namespace TgKarBot.API
             string text;
             try
             {
+                List<string>? users;
                 switch (command.ToLower())
                 {
+                    case Constants.Commands.Help:
                     case Constants.Commands.Start:
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Start);
                         StaticLogger.Logger.Info($"{Constants.Commands.Start} is done");
@@ -73,6 +77,16 @@ namespace TgKarBot.API
                         else text = await Logic.Teams.RegTeam(splitMessage[1], message.From.Id);
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Попытка зарегистрировать команду: {text}");
+                        break;
+                    case Constants.Commands.StartGame:
+                        text = await Logic.Teams.StartGame(message.From.Id);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Попытка начать игру: {text}");
+                        break;
+                    case Constants.Commands.Progress:
+                        text = await Logic.Teams.Progress(message.From.Id);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Попытка начать игру: {text}");
                         break;
                     case Constants.Commands.Ask:
                         text = await Logic.Asks.CheckAsk(message.From.Id, message.Text);
@@ -104,20 +118,88 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Добавлена награда за правильный ответ: {message.Text}. Результат: {text}");
                         break;
+                    case Constants.Commands.SetRewardType:
+                        text = await Logic.Admins.SetRewardType(message.From.Id, message.Text);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Изменён тип награды: {message.Text}. Результат: {text}");
+                        break;
                     case Constants.Commands.DeleteReward:
                         text = await Logic.Admins.DeleteReward(message.From.Id, message.Text);
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Удалёна награда за правильный ответ: {message.Text}. Результат: {text}");
                         break;
-                    case Constants.Commands.Help:
+                    case Constants.Commands.Support:
                         await botClient.ForwardMessageAsync(Constants.ChatId.AdminChatId, message.Chat.Id, message.MessageId);
                         StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
+                        break;
+                    case Constants.Commands.Drink:
+                        text = Logic.Asks.Drink(message.From.Id);
+                        StaticLogger.Logger.Info($"Попытка выпить: {message.Text}. Результат: {text}");
+                        break;
+                    case Constants.Commands.Next:
+                        text = Logic.Asks.Next(message.From.Id);
+                        StaticLogger.Logger.Info($"Попытка продолжить игру: {message.Text}. Результат: {text}");
+                        break;
+                    case Constants.Commands.GlobalStart:
+                        text = await Logic.Admins.GlobalStart(message.From.Id, message.Text);
+                        users = await Database.Teams.ReadAllUsersId();
+                        foreach (var userId in users)
+                        {
+                            try
+                            {
+                                await botClient.SendTextMessageAsync(userId, text);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                                StaticLogger.Logger.Info($"Ошибка при отправки сообщения для {userId}. Текст ошибки: {e}.");
+                                throw;
+                            }
+                        }
+                        StaticLogger.Logger.Info($"Сообщение отправлено всем зарегистрированным пользователям. Сообщение: {message.Text}.");
+                        break;
+                    case Constants.Commands.GlobalFinish:
+                        text = await Logic.Admins.GlobalFinish(message.From.Id, message.Text);
+                        users = await Database.Teams.ReadAllUsersId();
+                        foreach (var userId in users)
+                        {
+                            try
+                            {
+                                await botClient.SendTextMessageAsync(userId, text);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                                StaticLogger.Logger.Info($"Ошибка при отправки сообщения для {userId}. Текст ошибки: {e}.");
+                                throw;
+                            }
+                        }
+                        StaticLogger.Logger.Info($"Сообщение отправлено всем зарегистрированным пользователям. Сообщение: {message.Text}.");
+                        break;
+                    case Constants.Commands.ToAll:
+                        if (!await Logic.Admins.CheckAdmins(message.From.Id)) return;
+                        text = message.Text.Substring(7);
+                        users = await Database.Teams.ReadAllUsersId();
+                        foreach (var userId in users)
+                        {
+                            try
+                            {
+                                await botClient.SendTextMessageAsync(userId, text);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                                StaticLogger.Logger.Info($"Ошибка при отправки сообщения для {userId}. Текст ошибки: {e}.");
+                                throw;
+                            }
+                        }
+                        StaticLogger.Logger.Info($"Сообщение отправлено всем зарегистрированным пользователям. Сообщение: {message.Text}.");
                         break;
                     default:
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
                         StaticLogger.Logger.Info("Default message is sended");
                         break;
-                }
+                }   
             }
             catch (Exception e)
             {
@@ -129,7 +211,7 @@ namespace TgKarBot.API
 
         public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
-            StaticLogger.Logger.Info(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
+            StaticLogger.Logger.Error(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(exception));
         }
     }

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Configuration;
+using System.Collections.Specialized;
 using System.Text;
-using System.Threading.Tasks;
 using TgKarBot.Constants;
 using TgKarBot.Logic.Helpers;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TgKarBot.Logic
 {
@@ -56,19 +55,47 @@ namespace TgKarBot.Logic
         {
             return await GeneralActions.AddSomething(
                 userId, message,
-                Database.Asks.ReadAsync,
-                Database.Asks.CreateAsync,
+                Database.Rewards.ReadAsync,
+                Database.Rewards.CreateAsync,
                 Messages.RewardAlreadyExist,
                 Messages.RewardSuccessCreation,
                 2);
+        }
+
+        internal static async Task<string> SetRewardType(long userId, string message)
+        {
+            if (!await Admins.CheckAdmins(userId)) return Messages.OnlyForAdmins;
+
+            var splittedMessage = message.Split();
+            var id = splittedMessage[1];
+            if (await Database.Rewards.ReadAsync(id) == null)
+                return Messages.RewardDoesntExist;
+
+            var isMain = splittedMessage[2] != "0";
+            int time;
+            if (!isMain)
+            {
+                try
+                {
+                    time = int.Parse(splittedMessage[3]);
+                }
+                catch (Exception)
+                {
+                    return Messages.IncorrectInput + Commands.SetRewardTypeSample;
+                }
+                await Database.Rewards.UpdateTypeAsync(id, isMain, time);
+            }
+            else
+                await Database.Rewards.UpdateTypeAsync(id, isMain);
+            return Messages.RewardSuccessUpdateType;
         }
 
         internal static async Task<string> DeleteReward(long userId, string message)
         {
             return await GeneralActions.DeleteSomething(
                 userId, message,
-                Database.Asks.ReadAsync,
-                Database.Asks.DeleteAsync,
+                Database.Rewards.ReadAsync,
+                Database.Rewards.DeleteAsync,
                 Messages.RewardDoesntExist,
                 Messages.RewardSuccessDelete);
         }
@@ -78,6 +105,54 @@ namespace TgKarBot.Logic
         {
             var adminId = await Database.Admins.ReadAsync(userId.ToString());
             return adminId != null;
+        }
+
+        internal static async Task<string> GlobalStart(long userId, string message)
+        {
+            if (!await CheckAdmins(userId)) return Messages.OnlyForAdmins;
+
+            var split = message.Split();
+            if (split.Length > 1 && split[1] == "0")
+            {
+                ConfigurationManager.AppSettings.Set("GameStarted", "false");
+                var text = new StringBuilder(Messages.AdminStopGame);
+
+                if (split.Length <= 2) return text.ToString();
+
+                for (var i = 2; i < split.Length; i++)
+                {
+                    text.Append($" {split[i]}");
+                }
+
+                return text.ToString();
+            }
+
+            ConfigurationManager.AppSettings.Set("GameStarted", "true");
+            return Messages.GameGlobalStart;
+        }
+
+        internal static async Task<string> GlobalFinish(long userId, string message)
+        {
+            if (!await CheckAdmins(userId)) return Messages.OnlyForAdmins;
+
+            var text = new StringBuilder();
+            var split = message.Split();
+            if (split.Length < 2 || split[1] == "1")
+            {
+                ConfigurationManager.AppSettings.Set("GameFinished", "true");
+                text.Append(Messages.FinishGame);
+            }
+            else
+                ConfigurationManager.AppSettings.Set("GameFinished", "false");
+
+            if (split.Length <= 2) return text.ToString();
+
+            for (var i = 2; i < split.Length; i++)
+            {
+                text.Append($" {split[i]}");
+            }
+
+            return text.ToString();
         }
     }
 }
