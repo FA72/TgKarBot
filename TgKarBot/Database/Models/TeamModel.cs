@@ -14,7 +14,9 @@ namespace TgKarBot.Database.Models
         [Key]
         public string TeamId { get; set; }
         public string UserId { get; set; }
-        public string StartTime { get; }
+        public DateTime? StartTime { get; set; }
         public int BonusTime { get; set; } 
+        public int Penalty { get; set; }
+        public bool IsEnd { get; set; }
     }
 }
