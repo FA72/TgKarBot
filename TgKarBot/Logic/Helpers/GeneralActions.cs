@@ -4,10 +4,10 @@ namespace TgKarBot.Logic.Helpers
 {
     internal class GeneralActions
     {
-        internal static async Task<string> AddSomething(
+        internal static async Task<string> AddSomething<T>(
             long userId,
             string message,
-            Func<string, Task<string?>> readFunc,
+            Func<string, Task<T>> readFunc,
             Func<string, string, Task> writeFunc,
             string alreadyExistMessage,
             string successMessage,
@@ -27,10 +27,10 @@ namespace TgKarBot.Logic.Helpers
             return successMessage;
         }
 
-        internal static async Task<string> DeleteSomething(
+        internal static async Task<string> DeleteSomething<T>(
             long userId,
             string message,
-            Func<string, Task<string?>> readFunc,
+            Func<string, Task<T>> readFunc,
             Func<string, Task> deleteFunc,
             string doesntExistMessage,
             string successMessage

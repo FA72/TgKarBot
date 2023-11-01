@@ -60,6 +60,7 @@ namespace TgKarBot.API
             string text;
             try
             {
+                List<string>? users;
                 switch (command.ToLower())
                 {
                     case Constants.Commands.Start:
@@ -76,6 +77,11 @@ namespace TgKarBot.API
                         break;
                     case Constants.Commands.StartGame:
                         text = await Logic.Teams.StartGame(message.From.Id);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Попытка начать игру: {text}");
+                        break;
+                    case Constants.Commands.Progress:
+                        text = await Logic.Teams.Progress(message.From.Id);
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Попытка начать игру: {text}");
                         break;
@@ -109,18 +115,41 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Добавлена награда за правильный ответ: {message.Text}. Результат: {text}");
                         break;
+                    case Constants.Commands.SetRewardType:
+                        text = await Logic.Admins.SetRewardType(message.From.Id, message.Text);
+                        await botClient.SendTextMessageAsync(message.Chat, text);
+                        StaticLogger.Logger.Info($"Изменён тип награды: {message.Text}. Результат: {text}");
+                        break;
                     case Constants.Commands.DeleteReward:
                         text = await Logic.Admins.DeleteReward(message.From.Id, message.Text);
                         await botClient.SendTextMessageAsync(message.Chat, text);
                         StaticLogger.Logger.Info($"Удалёна награда за правильный ответ: {message.Text}. Результат: {text}");
                         break;
-                    case Constants.Commands.Help:
+                    case Constants.Commands.Support:
                         await botClient.ForwardMessageAsync(Constants.ChatId.AdminChatId, message.Chat.Id, message.MessageId);
                         StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
                         break;
                     case Constants.Commands.GlobalStart:
                         text = await Logic.Admins.GlobalStart(message.From.Id, message.Text);
-                        var users = await Database.Teams.ReadAllUsersId();
+                        users = await Database.Teams.ReadAllUsersId();
+                        foreach (var userId in users)
+                        {
+                            try
+                            {
+                                await botClient.SendTextMessageAsync(userId, text);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                                StaticLogger.Logger.Info($"Ошибка при отправки сообщения для {userId}. Текст ошибки: {e}.");
+                                throw;
+                            }
+                        }
+                        StaticLogger.Logger.Info($"Сообщение отправлено всем зарегистрированным пользователям. Сообщение: {message.Text}.");
+                        break;
+                    case Constants.Commands.GlobalFinish:
+                        text = await Logic.Admins.GlobalFinish(message.From.Id, message.Text);
+                        users = await Database.Teams.ReadAllUsersId();
                         foreach (var userId in users)
                         {
                             try
@@ -140,7 +169,7 @@ namespace TgKarBot.API
                         await botClient.SendTextMessageAsync(message.Chat, Constants.Messages.Default);
                         StaticLogger.Logger.Info("Default message is sended");
                         break;
-                }
+                }   
             }
             catch (Exception e)
             {

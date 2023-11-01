@@ -12,5 +12,6 @@ namespace TgKarBot.Database.Models
         [Key]
         public string Id { get; set; }
         public string? CorrectAsk { get; set; }
+
     }
 }
