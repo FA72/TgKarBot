@@ -9,9 +9,10 @@ namespace TgKarBot.API
         private ITelegramBotClient _bot = new TelegramBotClient(token: ConfigurationManager.AppSettings.Get("TgToken"));
         private MessagesHandler _messagesHandler = new MessagesHandler();
 
-        internal void Start()
+        internal async Task StartAsync()
         {
-            Console.WriteLine("Запущен бот " + _bot.GetMeAsync().Result.FirstName);
+            var me = await _bot.GetMeAsync();
+            Console.WriteLine("Запущен бот " + me.FirstName);
             StaticLogger.Logger.Info("Запуск бота");
 
             var cts = new CancellationTokenSource();

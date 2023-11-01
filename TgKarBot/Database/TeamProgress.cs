@@ -28,16 +28,79 @@ namespace TgKarBot.Database
             return teamProgress?.TeamId;
         }
 
-        public static async Task<DateTime> ReadLastAskTimeAsync(string teamId)
+        public static async Task<DateTime?> ReadLastAskTimeAsync(string teamId)
         {
             await using var context = new TgBotDatabaseContext();
-            var query = context.TeamsProgress
+            return await context.TeamsProgress
                 .Where(tp => tp.TeamId == teamId)
-                .Select(tp => tp.Time);
-            var list = query.ToList();
-            var date = list.Select(date => new { Secs = Math.Abs((DateTime.MaxValue - date).TotalSeconds), Date = date })
-                .OrderBy(x => x.Secs).First();
-            return date.Date;
+                .OrderByDescending(tp => tp.Time)
+                .Select(tp => tp.Time)
+                .FirstOrDefaultAsync();
+        }
+
+
+        public static async Task<(DateTime? startDrinkTime, DateTime? endDrinkTime)> ReadLastDrinkTimeAsync(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+
+            var result = await context.TeamsProgress
+                .Where(tp => tp.TeamId == teamId)
+                .OrderByDescending(tp => tp.Time)
+                .Select(tp => new { tp.StartDrinkTime, tp.EndDrinkTime })
+                .FirstOrDefaultAsync();
+
+            return (result?.StartDrinkTime, result?.EndDrinkTime);
+        }
+
+        public static async Task<string> UpdateDrinkTimesAsync(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+
+            var teamProgress = await context.TeamsProgress
+                .Where(tp => tp.TeamId == teamId)
+                .OrderByDescending(tp => tp.Time)
+                .FirstOrDefaultAsync();
+
+            if (teamProgress == null) return null;
+
+            var currentTime = DateTime.Now;
+
+            teamProgress.StartDrinkTime ??= currentTime;
+
+            teamProgress.EndDrinkTime = currentTime;
+
+            await context.SaveChangesAsync();
+
+            return teamProgress.AskId;
+        }
+
+        public static async Task StartDrinkAsync(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+
+            var teamProgress = await context.TeamsProgress
+                .Where(tp => tp.TeamId == teamId)
+                .OrderByDescending(tp => tp.Time)
+                .FirstOrDefaultAsync();
+
+            if (teamProgress != null)
+            {
+                teamProgress.StartDrinkTime = DateTime.Now;
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public static async Task<TimeSpan> CalculateTotalDrinkTimeAsync(string teamId)
+        {
+            await using var context = new TgBotDatabaseContext();
+
+            var drinkTimes = await context.TeamsProgress
+                .Where(tp => tp.TeamId == teamId && tp.StartDrinkTime.HasValue && tp.EndDrinkTime.HasValue)
+                .Select(tp => new { Start = tp.StartDrinkTime.Value, End = tp.EndDrinkTime.Value })
+                .ToListAsync();
+
+            return drinkTimes.Aggregate(TimeSpan.Zero, (current, time) => current + (time.End - time.Start));
         }
 
         public static async Task<DateTime?> ReadAskTimeAsync(string teamId, string askId)

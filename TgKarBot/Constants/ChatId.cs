@@ -2,6 +2,6 @@
 {
     internal class ChatId
     {
-        internal const long AdminChatId = -621503074;
+        internal const long AdminChatId = -0; // Todo введите айди, куда будут приходить ответы бота (предварительно добавьте бота туда)
     }
 }

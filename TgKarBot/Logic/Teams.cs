@@ -70,7 +70,7 @@ namespace TgKarBot.Logic
             tasks = await Database.Tasks.ReadAllAsync();
             foreach (var task in tasks)
             {
-                textBuilder.Append($"\n\n{task.Id}. {task.Text}");
+                textBuilder.Append($"\n{task.Id}. {task.Text}");
             }
         }
 
@@ -93,7 +93,7 @@ namespace TgKarBot.Logic
             var (bonusTime, penalty) = await Database.Teams.ReadBonusTimeAndPenaltyAsync(teamId);
             var penaltyTime = penalty * Numbers.penaltyTime;
 
-            var time = await Asks.GetTime(startTimeString, teamId, bonusTime);
+            var time = await Asks.GetTime(startTimeString, teamId, bonusTime, penaltyTime);
             var progressMessage = $"Вы ответили на {mainCorrect}/{mainTasksCount}\n{Messages.EndTheGameTime}{time}. Из них бонусные минуты - {bonusTime} и добавленные за неправильные ответы {penaltyTime} мин.";
 
             return progressMessage;

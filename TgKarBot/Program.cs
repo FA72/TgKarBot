@@ -7,7 +7,7 @@ namespace TgKarBot
         static async Task Main(string[] args)
         {
             Connect connect = new();
-            connect.Start();
+            await connect.StartAsync();
         }
     }
 }
