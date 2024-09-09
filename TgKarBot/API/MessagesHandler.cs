@@ -214,9 +214,10 @@ internal class MessagesHandler
         }
     }
 
-    public void HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+    public Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
     {
         StaticLogger.Logger.Error(JsonConvert.SerializeObject(exception));
         Console.WriteLine(JsonConvert.SerializeObject(exception));
+        return Task.CompletedTask;
     }
 }
