@@ -140,11 +140,6 @@ internal class MessagesHandler
                     await botClient.ForwardMessageAsync(ChatId.AdminChatId, message.Chat.Id, message.MessageId);
                     StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
                     break;
-                case Commands.Drink:
-                    text = await Asks.Drink(message.From!.Id);
-                    await botClient.SendTextMessageAsync(message.Chat, text);
-                    StaticLogger.Logger.Info($"Попытка выпить: {message.Text}. Результат: {text}");
-                    break;
                 case Commands.Next:
                     text = await Asks.Next(message.From!.Id);
                     await botClient.SendTextMessageAsync(message.Chat, text);
