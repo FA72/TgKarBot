@@ -64,8 +64,6 @@ internal class TeamsProgress
 
         var currentTime = DateTime.Now;
 
-        teamProgress.StartDrinkTime ??= currentTime;
-
         teamProgress.EndDrinkTime = currentTime;
 
         await context.SaveChangesAsync();

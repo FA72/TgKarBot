@@ -50,20 +50,21 @@ internal class Asks
         var num = splittedMessage[1];
 
         if (await TeamsProgress.ReadAsync(teamId, num) != null)
-            return $"{Messages.AlreadyAsked}\n\n{(await Rewards.ReadAsync(num)).Reward}";
+            return $"{Messages.AlreadyAsked}\n\n";
 
         var ask = Parser.ParseBodyMessage(splittedMessage, 2);
         var correctAsk = await Database.Asks.ReadAsync(num);
 
         if (correctAsk == null) return Messages.IncorrectNum;
 
-        if (!ask.Equals(correctAsk.Trim(), StringComparison.OrdinalIgnoreCase))
+        if (!ask.Trim().ToLower().Replace('ё', 'е').Equals(correctAsk.Trim(), StringComparison.OrdinalIgnoreCase))
         {
             await Database.Teams.AddPenaltyAsync(teamId);
             return Messages.NotCorrectAsk;
         }
 
         var output = new StringBuilder($"{Messages.Correct}\n");
+        var awaitNext = await TeamsProgress.ReadLastDrinkTimeAsync(teamId);
 
         var (isWin, progress, maxAsks) = await Teams.SaveProgress(teamId, num);
         var reward = await Rewards.ReadAsync(num);
@@ -86,12 +87,14 @@ internal class Asks
         {
             output.Append($"На данный момент отвечено на {progress} из {maxAsks} основных вопросов. Также заработано {bonusTime} минут бонусного времени.\n");
 
+            if (!reward!.IsMain)
+                return output.ToString();
+
             var test = await TeamsProgress.ReadAllAsync(teamId);
             var isLastPairFull = CheckLastPairFull(test);
 
             if (isLastPairFull)
             {
-                var awaitNext = await TeamsProgress.ReadLastDrinkTimeAsync(teamId);
                 if (awaitNext.endDrinkTime == null)
                 {
                     output.Append($"Вы можете выпить в баре (таймер всё ещё на паузе) или продолжить игру и увидеть следующее задание" +
@@ -99,7 +102,7 @@ internal class Asks
                 }
                 else
                 {
-                    output.Append($"Таймер идёт, так как уже доступны следующие вопросы, но вы всё равно можете выпить в баре, если хотите.");
+                    output.Append($"Таймер идёт, так как уже доступны следующие вопросы, но вы всё равно можете выпить в баре, если хотите. Напоминаем ваши следующие вопросы:\n\n{reward.Reward}");
                 }
             }
             else
@@ -150,8 +153,14 @@ internal class Asks
     {
         if (progressList.Count < 2) return false;
 
-        var last = int.Parse(progressList[^1]);
-        var secondLast = int.Parse(progressList[^2]);
+        var filteredAndSortedList = progressList
+            .Where(item => int.TryParse(item, out _)) 
+            .Select(int.Parse)
+            .OrderBy(x => x)
+            .ToList();
+
+        var last = filteredAndSortedList[^1];
+        var secondLast = filteredAndSortedList[^2];
 
         return last - secondLast <= 1 && last % 2 != 1;
     }
