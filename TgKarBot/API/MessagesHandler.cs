@@ -4,6 +4,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TgKarBot.Constants;
 using TgKarBot.Logic;
+using TgKarBot.Logic.Helpers;
 using ChatId = TgKarBot.Constants.ChatId;
 
 namespace TgKarBot.API;
@@ -26,8 +27,16 @@ internal class MessagesHandler
             switch (message.Chat.Id)
             {
                 case ChatId.AdminChatId:
-                    if (message.ReplyToMessage?.ForwardFrom == null || message.ReplyToMessage.From?.Id != botClient.BotId)
+                    if (message.ReplyToMessage?.ForwardFrom == null ||
+                        message.ReplyToMessage.From?.Id != botClient.BotId)
+                    {
+                        if(message.ReplyToMessage == null || message.ReplyToMessage.From?.Id != botClient.BotId) return;
+
+                        var userId = MessageUserIdSaver.GetUserId(message.ReplyToMessage.MessageId);
+                        await botClient.SendTextMessageAsync(userId, $"Кар!\n{message.Text}", cancellationToken: cancellationToken);
+                        StaticLogger.Logger.Info($"Ответили пользовалелю в ЛС. Текст: \"{message.Text}\".");
                         return;
+                    }
 
                     await botClient.SendTextMessageAsync(message.ReplyToMessage.ForwardFrom.Id, $"Кар!\n{message.Text}", cancellationToken: cancellationToken);
                     StaticLogger.Logger.Info($"Ответили пользовалелю в ЛС. Текст: \"{message.Text}\".");
@@ -137,7 +146,8 @@ internal class MessagesHandler
                     StaticLogger.Logger.Info($"Удалёна награда за правильный ответ: {message.Text}. Результат: {text}");
                     break;
                 case Commands.Support:
-                    await botClient.ForwardMessageAsync(ChatId.AdminChatId, message.Chat.Id, message.MessageId);
+                    var forwardedMessage = await botClient.ForwardMessageAsync(ChatId.AdminChatId, message.Chat.Id, message.MessageId);
+                    MessageUserIdSaver.AddToFile(forwardedMessage.MessageId, message.Chat.Id);
                     StaticLogger.Logger.Info($"В чат направлен запрос на помощь. Сообщение: {message.Text}.");
                     break;
                 case Commands.Next:

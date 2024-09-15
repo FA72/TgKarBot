@@ -69,7 +69,7 @@ internal class Teams
         tasks = await Tasks.ReadAllAsync();
         foreach (var task in tasks)
         {
-            textBuilder.Append($"\n{task.Id}. {task.Text}");
+            textBuilder.Append($"\n\n{task.Id}. {task.Text}");
         }
     }
 
