@@ -2,5 +2,5 @@
 
 internal class Numbers
 {
-    public const int penaltyTime = 3;
+    public const int penaltyTime = 1;
 }
