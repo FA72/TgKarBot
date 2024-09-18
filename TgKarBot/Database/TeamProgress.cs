@@ -43,7 +43,7 @@ internal class TeamsProgress
         await using var context = new TgBotDatabaseContext();
 
         var result = await context.TeamsProgress
-            .Where(tp => tp.TeamId == teamId)
+            .Where(tp => tp.TeamId == teamId && tp.AskId.Length <= 2) //todo костыль
             .OrderByDescending(tp => tp.Time)
             .Select(tp => new { tp.StartDrinkTime, tp.EndDrinkTime })
             .FirstOrDefaultAsync();
@@ -56,7 +56,7 @@ internal class TeamsProgress
         await using var context = new TgBotDatabaseContext();
 
         var teamProgress = await context.TeamsProgress
-            .Where(tp => tp.TeamId == teamId)
+            .Where(tp => tp.TeamId == teamId && tp.AskId.Length <= 2) //todo костыль
             .OrderByDescending(tp => tp.Time)
             .FirstOrDefaultAsync();
 
