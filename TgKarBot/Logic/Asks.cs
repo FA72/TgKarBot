@@ -136,6 +136,10 @@ internal class Asks
         }
 
         var num = await TeamsProgress.UpdateDrinkTimesAsync(teamId);
+        if (num == null)
+        {
+            return "Вы не ответили ещё ни на один основной вопрос пакета";
+        }
         var reward = await Rewards.ReadAsync(num);
         return $"{Messages.Reward}\n\n{reward.Reward}";
     }
@@ -151,13 +155,13 @@ internal class Asks
 
     private static bool CheckLastPairFull(List<string> progressList)
     {
-        if (progressList.Count < 2) return false;
-
         var filteredAndSortedList = progressList
-            .Where(item => int.TryParse(item, out _)) 
+            .Where(item => int.TryParse(item, out _))
             .Select(int.Parse)
             .OrderBy(x => x)
             .ToList();
+
+        if (filteredAndSortedList.Count < 2) return false;
 
         var last = filteredAndSortedList[^1];
         var secondLast = filteredAndSortedList[^2];
