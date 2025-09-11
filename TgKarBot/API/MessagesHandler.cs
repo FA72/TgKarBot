@@ -17,7 +17,7 @@ internal class MessagesHandler
         Console.WriteLine(JsonConvert.SerializeObject(update));
 
         if (update.Type != UpdateType.Message) return;
-            
+
         var message = update.Message;
 
         if (message?.Text == null) return;
@@ -30,16 +30,16 @@ internal class MessagesHandler
                     if (message.ReplyToMessage?.ForwardFrom == null ||
                         message.ReplyToMessage.From?.Id != botClient.BotId)
                     {
-                        if(message.ReplyToMessage == null || message.ReplyToMessage.From?.Id != botClient.BotId) return;
+                        if (message.ReplyToMessage == null || message.ReplyToMessage.From?.Id != botClient.BotId) return;
 
                         var userId = MessageUserIdSaver.GetUserId(message.ReplyToMessage.MessageId);
                         await botClient.SendTextMessageAsync(userId, $"Кар!\n{message.Text}", cancellationToken: cancellationToken);
-                        StaticLogger.Logger.Info($"Ответили пользовалелю в ЛС. Текст: \"{message.Text}\".");
+                        StaticLogger.Logger.Info($"Ответили пользователю в ЛС. Текст: \"{message.Text}\".");
                         return;
                     }
 
                     await botClient.SendTextMessageAsync(message.ReplyToMessage.ForwardFrom.Id, $"Кар!\n{message.Text}", cancellationToken: cancellationToken);
-                    StaticLogger.Logger.Info($"Ответили пользовалелю в ЛС. Текст: \"{message.Text}\".");
+                    StaticLogger.Logger.Info($"Ответили пользователю в ЛС. Текст: \"{message.Text}\".");
                     return;
 
                 default:
@@ -103,7 +103,7 @@ internal class MessagesHandler
                 case Commands.Progress:
                     text = await Teams.Progress(message.From!.Id);
                     await botClient.SendTextMessageAsync(message.Chat, text);
-                    StaticLogger.Logger.Info($"Попытка начать игру: {text}");
+                    StaticLogger.Logger.Info($"Попытка получить информацию об игре: {text}");
                     break;
                 case Commands.Ask:
                     text = await Asks.CheckAsk(message.From!.Id, message.Text);
@@ -214,7 +214,7 @@ internal class MessagesHandler
                     await botClient.SendTextMessageAsync(message.Chat, Messages.Default);
                     StaticLogger.Logger.Info("Default message is sended");
                     break;
-            }   
+            }
         }
         catch (Exception e)
         {

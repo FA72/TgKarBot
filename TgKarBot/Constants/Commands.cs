@@ -4,7 +4,7 @@ internal class Commands
 {
     internal const string Start = "/start";
     internal const string Help = "/help";
-    internal static List<string> StartSynonims = new() { Start, "start", "старт", "начать", "запуск"};
+    internal static List<string> StartSynonims = new() { Start, "start", "старт", "начать", "запуск" };
 
     internal const string GlobalStart = "/globalstart";
     internal const string GlobalFinish = "/globalfinish";
@@ -14,7 +14,7 @@ internal class Commands
 
     internal const string RegTeam = "/regteam";
     internal static List<string> RegTeamSynonims = new() { RegTeam, "team", "reg", "регистрация", "команда" };
-    internal const string RegTeamSample = $"{RegTeam} id";
+    internal const string RegTeamSample = $"{RegTeam} [НазваниеКоманды (в одно слово без пробелов)]";
 
     internal const string Progress = "/progress";
     internal const string ToAll = "/toall";
