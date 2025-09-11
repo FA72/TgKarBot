@@ -22,7 +22,7 @@ internal class MessagesHandler
 
         if (message?.Text == null) return;
 
-        if (message.Chat.Type == ChatType.Group)
+        if (message.Chat.Type == ChatType.Group || message.Chat.Type == ChatType.Supergroup)
         {
             switch (message.Chat.Id)
             {
