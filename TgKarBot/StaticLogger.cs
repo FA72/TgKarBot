@@ -1,9 +1,8 @@
 ﻿using NLog;
 
-namespace TgKarBot
+namespace TgKarBot;
+
+public class StaticLogger
 {
-    public class StaticLogger
-    {
-        public static ILogger Logger { get; set; } = LogManager.GetCurrentClassLogger();
-    }
+    public static ILogger Logger { get; set; } = LogManager.GetCurrentClassLogger();
 }

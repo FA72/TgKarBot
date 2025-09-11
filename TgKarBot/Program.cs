@@ -1,13 +1,12 @@
 ﻿using TgKarBot.API;
 
-namespace TgKarBot
+namespace TgKarBot;
+
+internal class Program
 {
-    internal class Program
+    static async Task Main(string[] args)
     {
-        static async Task Main(string[] args)
-        {
-            Connect connect = new();
-            await connect.StartAsync();
-        }
+        Connect connect = new();
+        await connect.StartAsync();
     }
 }
