@@ -1,4 +1,4 @@
-﻿namespace TgKarBot.Constants;
+namespace TgKarBot.Constants;
 
 internal class Commands
 {
@@ -14,7 +14,7 @@ internal class Commands
 
     internal const string RegTeam = "/regteam";
     internal static List<string> RegTeamSynonims = new() { RegTeam, "team", "reg", "регистрация", "команда" };
-    internal const string RegTeamSample = $"{RegTeam} id";
+    internal const string RegTeamSample = $"{RegTeam} [НазваниеКоманды (в одно слово без пробелов)]";
 
     internal const string Progress = "/progress";
     internal const string ToAll = "/toall";
